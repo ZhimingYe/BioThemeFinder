@@ -1,3 +1,9 @@
+# dataframe files
+*.csv
+*.xlsx
+*.xls
+*.rds
+
 # History files
 .Rhistory
 .Rapp.history
