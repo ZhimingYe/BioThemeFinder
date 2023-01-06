@@ -14,7 +14,7 @@ DetermineDirection<-function(x,NumOfDiff,UPset,DNset){
   return(Type0)
 }
 
-MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),simplify_cutoff=0.7){
+MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),simplify_cutoff=0.7,Term2GENE){
   message("***BioThemeFinder***\nEnrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n")
   Res0<-data.frame()
   if(sum(c("GO","KEGG","Reactome")%in%DBlist)<1){
@@ -32,9 +32,18 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),simpl
     cat("Applying Reactome analysis...\n")
     Res0<-rbind(Res0,doReactomeanalysis(x=x,PValCutOff = PVal,QValCutOff=QVal))
   }
+  if("SelfDefinedGS"%in%DBlist){
+    if(!is.null(Term2GENE)){
+      cat("Applying analysis in self-defined gene set...\n")
+      Res0<-rbind(Res0,doSelfDefinedGeneset(x=x,PValCutOff = PVal,QValCutOff=QVal,Term2GENE=Term2GENE))
+    }
+    else{
+      stop("Please provide self-defined gene set in Term2GENE argument. \n")
+    }
+  }
   x@Results<-Res0%>%as.data.frame()
   x@IsAnalysed<-T
-  x@dbName<-DBlist
+  x@dbName<-DBlist[DBlist%in%c("GO","KEGG","Reactome","SelfDefinedGS")]
   message("Finished!\n")
   return(x)
 }
@@ -75,4 +84,8 @@ getNumOfGENEs<-function(){
 
 ResultRemover<-function(){
   #need add an attr , determine whether before clustering.
+}
+
+getGMT<-function(){
+
 }
