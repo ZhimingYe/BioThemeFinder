@@ -82,10 +82,27 @@ getNumOfGENEs<-function(){
 
 }
 
-ResultRemover<-function(){
-  #need add an attr , determine whether before clustering.
+RemoveTerms<-function(x,Item){
+  if(nrow(x@Results)<1){
+    stop("Please first do analysis before remove.\n")
+  }
+  if(length(Item)==1){
+    x@Results<-x@Results%>%dplyr::filter(!grepl(Item,.$Description))
+  }
+  if(length(Item)>1){
+    x@Results<-x@Results%>%dplyr::filter(Description%in%Item)
+  }
+  x@DupMatrix<-NULL
+  x@IsClustered<-F
+  return(x)
+}
+
+SelectTerms<-function(x,Item){
+  cat("TIPS:\nThis function only used after calculated duplicated matrix, to select a few pathways for following drawing.\nIf you want to modifiy the object before caluclating duplicate matrix, please use RemoveTerms function instead.\n")
+  x@SelectedResultNames<-Item[Item%in%((x@Results)$Description)]
+  return(x)
 }
 
 getGMT<-function(){
-
+  enesetHypo <- GSEABase::getGmt(file.path(GMTfilePath))#TODO
 }

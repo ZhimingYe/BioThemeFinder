@@ -5,7 +5,8 @@ setClass("BioThemeFinder.ORA",slots=list(WholeGenes="character",
                                          dbName="character",
                                          IsAnalysed="logical",
                                          IsClustered="logical",
-                                         DupMatrix="data.frame"))
+                                         DupMatrix="data.frame",
+                                         SelectedResultNames="character"))
 
 setClass("BioThemeFinder.ORA_FC",slots=list(UpRegGenes="character",
                                             DownRegGenes="character",
@@ -16,7 +17,8 @@ setClass("BioThemeFinder.ORA_FC",slots=list(UpRegGenes="character",
                                             IsAnalysed="logical",
                                             IsClustered="logical",
                                             DupMatrix="data.frame",
-                                            CutOff_Reg="numeric"))
+                                            CutOff_Reg="numeric",
+                                            SelectedResultNames="character"))
 
 setClass("BioThemeFinder.GSEA",slots=list(RankedGenes="numeric",
                                           Specics="character",
@@ -24,7 +26,8 @@ setClass("BioThemeFinder.GSEA",slots=list(RankedGenes="numeric",
                                           dbName="character",
                                           IsAnalysed="logical",
                                           IsClustered="logical",
-                                          DupMatrix="data.frame"))
+                                          DupMatrix="data.frame",
+                                          SelectedResultNames="character"))
 
 Create.newBioThemeFinder.ORA<-function (Gene,FromType = "SYMBOL", Specics="human"){
   if(Specics=="human"){
