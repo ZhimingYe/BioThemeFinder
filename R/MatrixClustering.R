@@ -1,5 +1,5 @@
 DupClustering.Fuzzy<-function(x,k,...){
-  res.fcm <- Fclust(x@DupMatrix, k=k)
+  res.fcm <- fclust::Fclust(x@DupMatrix, k=k)
   kk<-res.fcm[["clus"]][,-2]%>%as.data.frame()
   colnames(kk)[1]<-"Cluster"
   return(kk)
