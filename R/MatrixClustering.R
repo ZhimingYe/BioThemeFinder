@@ -32,6 +32,10 @@ DupClustering.PAM<-function(x,k,method1="euclidean",...){
 }
 
 DupClustering<-function(x,k,method="nmf",dist_method,cluster_method,self_def=F){
+  if("GSCluster"%in%colnames(x@Results)){
+    x@Results<-x@Results%>%dplyr::select(-GSCluster)
+    message("Old Cluster has been removed.\n")
+  }
   if(method=="nmf"){
     if(!self_def){
       cluster_method<-"brunet"
