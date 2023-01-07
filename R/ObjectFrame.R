@@ -1,11 +1,15 @@
-
+setOldClass("igraph")
+setOldClass("communities")
 setClass("BioThemeFinder.ORA",slots=list(WholeGenes="character",
                                          Specics="character",
                                          Results="data.frame",
                                          dbName="character",
                                          IsAnalysed="logical",
                                          IsClustered="logical",
+                                         IsNetworkClustered="logical",
                                          DupMatrix="data.frame",
+                                         Network="igraph",
+                                         Communities="communities",
                                          SelectedResultNames="character"))
 
 setClass("BioThemeFinder.ORA_FC",slots=list(UpRegGenes="character",
@@ -16,7 +20,10 @@ setClass("BioThemeFinder.ORA_FC",slots=list(UpRegGenes="character",
                                             dbName="character",
                                             IsAnalysed="logical",
                                             IsClustered="logical",
+                                            IsNetworkClustered="logical",
                                             DupMatrix="data.frame",
+                                            Network="igraph",
+                                            Communities="communities",
                                             CutOff_Reg="numeric",
                                             SelectedResultNames="character"))
 
@@ -26,7 +33,10 @@ setClass("BioThemeFinder.GSEA",slots=list(RankedGenes="numeric",
                                           dbName="character",
                                           IsAnalysed="logical",
                                           IsClustered="logical",
+                                          IsNetworkClustered="logical",
                                           DupMatrix="data.frame",
+                                          Network="igraph",
+                                          Communities="communities",
                                           SelectedResultNames="character"))
 
 Create.newBioThemeFinder.ORA<-function (Gene,FromType = "SYMBOL", Specics="human"){
