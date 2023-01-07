@@ -14,7 +14,7 @@ DetermineDirection<-function(x,NumOfDiff,UPset,DNset){
   return(Type0)
 }
 
-MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),simplify_cutoff=0.7,Term2GENE){
+MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneCutOff=3,simplify_cutoff=0.7,Term2GENE){
   message("***BioThemeFinder***\nEnrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n")
   Res0<-data.frame()
   if(sum(c("GO","KEGG","Reactome")%in%DBlist)<1){
@@ -42,6 +42,9 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),simpl
     }
   }
   x@Results<-Res0%>%as.data.frame()
+  NumFiltered<-sum((getNumOfGENEs(x))<=nGeneCutOff)
+  x@Results<-x@Results%>%dplyr::filter((getNumOfGENEs(x))>nGeneCutOff)
+  cat("Filtered ",NumFiltered," results with less than ",nGeneCutOff," genes enriched. \n PCutoff:",PVal,"  QCutoff (in ORA)",QVal," GO ORA simplify cutoff:",simplify_cutoff,". \n")
   x@IsAnalysed<-T
   x@dbName<-DBlist[DBlist%in%c("GO","KEGG","Reactome","SelfDefinedGS")]
   message("Finished!\n")
@@ -78,9 +81,29 @@ mapTBs.<-function (Mat, FilterList, mode = "V2")
   return(Mat)
 }
 
-getNumOfGENEs<-function(){
 
-}
+
+setGeneric("getNumOfGENEs",function(x,...) standardGeneric("getNumOfGENEs"))
+
+
+setMethod("getNumOfGENEs",signature(x="BioThemeFinder.ORA"),function(x,...){
+  res<-unlist(lapply(strsplit(x@Results$geneID,"/"),length))
+  return(res)
+})
+
+
+setMethod("getNumOfGENEs",signature(x="BioThemeFinder.ORA_FC"),function(x,...){
+  res<-unlist(lapply(strsplit(x@Results$geneID,"/"),length))
+  return(res)
+})
+
+setMethod("getNumOfGENEs",signature(x="BioThemeFinder.GSEA"),function(x,...){
+  res<-unlist(lapply(strsplit(x@Results$core_enrichment,"/"),length))
+  return(res)
+})
+
+
+
 
 RemoveTerms<-function(x,Item){
   if(nrow(x@Results)<1){
@@ -103,6 +126,6 @@ SelectTerms<-function(x,Item){
   return(x)
 }
 
-getGMT<-function(){
-  enesetHypo <- GSEABase::getGmt(file.path(GMTfilePath))#TODO
-}
+# getGMT<-function(){
+#   enesetHypo <- GSEABase::getGmt(file.path(GMTfilePath))#TODO
+# }
