@@ -4,11 +4,15 @@ setGeneric("doKEGGanalysis",function(x,PValCutOff,...) standardGeneric("doKEGGan
 setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA"),function(x,PValCutOff,QValCutOff,...){
   if(x@Specics=="human"){
     orgid<-"hsa"
+    require(org.Hs.eg.db)
+    OrgDB<-org.Hs.eg.db
   }
   if(x@Specics=="mouse"){
     orgid<-"mmu"
+    require(org.Mm.eg.db)
+    OrgDB<-org.Mm.eg.db
   }
-  KEGGres<-clusterProfiler::enrichKEGG(x@WholeGenes,organism=orgid,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
+  KEGGres<-clusterProfiler::enrichKEGG(x@WholeGenes,organism=orgid,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
   RESdf<-KEGGres
   return(RESdf)
 })
@@ -18,11 +22,15 @@ setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,PValC
   NumOfDiff<-x@CutOff_Reg
   if(x@Specics=="human"){
     orgid<-"hsa"
+    require(org.Hs.eg.db)
+    OrgDB<-org.Hs.eg.db
   }
   if(x@Specics=="mouse"){
     orgid<-"mmu"
+    require(org.Mm.eg.db)
+    OrgDB<-org.Mm.eg.db
   }
-  KEGGres<-clusterProfiler::enrichKEGG(x@WholeGenes,organism=orgid,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
+  KEGGres<-clusterProfiler::enrichKEGG(x@WholeGenes,organism=orgid,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
   ResultsDF<-KEGGres
   GeneRegType<-rep("UnKnown",nrow(ResultsDF))
   geneIDcol<-which(colnames(ResultsDF)=="geneID")
@@ -37,11 +45,15 @@ setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,PValC
 setMethod("doKEGGanalysis",signature(x="BioThemeFinder.GSEA"),function(x,PValCutOff,...){
   if(x@Specics=="human"){
     orgid<-"hsa"
+    require(org.Hs.eg.db)
+    OrgDB<-org.Hs.eg.db
   }
   if(x@Specics=="mouse"){
     orgid<-"mmu"
+    require(org.Mm.eg.db)
+    OrgDB<-org.Mm.eg.db
   }
-  KEGGres<-clusterProfiler::gseKEGG(x@RankedGenes,organism=orgid,pvalueCutoff = PValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
+  KEGGres<-clusterProfiler::gseKEGG(x@RankedGenes,organism=orgid,pvalueCutoff = PValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
   ResultsDF<-KEGGres
   ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
   RESdf<-ResultsDF

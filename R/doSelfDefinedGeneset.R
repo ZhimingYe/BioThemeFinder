@@ -2,20 +2,36 @@
 setGeneric("doSelfDefinedGeneset",function(x,PValCutOff,Term2GENE,...) standardGeneric("doSelfDefinedGeneset"))
 
 setMethod("doSelfDefinedGeneset",signature(x="BioThemeFinder.ORA"),function(x,PValCutOff,Term2GENE,QValCutOff,...){
+  if(x@Specics=="human"){
+    require(org.Hs.eg.db)
+    OrgDB<-org.Hs.eg.db
+  }
+  if(x@Specics=="mouse"){
+    require(org.Mm.eg.db)
+    OrgDB<-org.Mm.eg.db
+  }
   if(sum(unlist(Term2GENE[,2])%in%x@WholeGenes)<20){
     stop("Please re-check your TERM2GENE table! \n")
   }
-  SDres<-clusterProfiler::enricher(x@WholeGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="Self")
+  SDres<-clusterProfiler::enricher(x@WholeGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="Self")
   RESdf<-SDres
   return(RESdf)
 })
 
 
 setMethod("doSelfDefinedGeneset",signature(x="BioThemeFinder.ORA_FC"),function(x,PValCutOff,Term2GENE,QValCutOff,...){
+  if(x@Specics=="human"){
+    require(org.Hs.eg.db)
+    OrgDB<-org.Hs.eg.db
+  }
+  if(x@Specics=="mouse"){
+    require(org.Mm.eg.db)
+    OrgDB<-org.Mm.eg.db
+  }
   if(sum(unlist(Term2GENE[,2])%in%x@WholeGenes)<20){
     stop("Please re-check your TERM2GENE table! \n")
   }
-  SDres<-clusterProfiler::enricher(x@WholeGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="Self")
+  SDres<-clusterProfiler::enricher(x@WholeGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff,qvalueCutoff = QValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="Self")
   ResultsDF<-SDres
   GeneRegType<-rep("UnKnown",nrow(ResultsDF))
   geneIDcol<-which(colnames(ResultsDF)=="geneID")
@@ -28,10 +44,18 @@ setMethod("doSelfDefinedGeneset",signature(x="BioThemeFinder.ORA_FC"),function(x
 })
 
 setMethod("doSelfDefinedGeneset",signature(x="BioThemeFinder.GSEA"),function(x,PValCutOff,Term2GENE,...){
+  if(x@Specics=="human"){
+    require(org.Hs.eg.db)
+    OrgDB<-org.Hs.eg.db
+  }
+  if(x@Specics=="mouse"){
+    require(org.Mm.eg.db)
+    OrgDB<-org.Mm.eg.db
+  }
   if(sum(unlist(Term2GENE[,2])%in%names(x@RankedGenes))<20){
     stop("Please re-check your TERM2GENE table! \n")
   }
-  SDres<-clusterProfiler::enricher(x@RankedGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="Self")
+  SDres<-clusterProfiler::enricher(x@RankedGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="Self")
   ResultsDF<-SDres
   ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
   RESdf<-ResultsDF
