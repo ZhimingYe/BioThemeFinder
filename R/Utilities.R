@@ -46,6 +46,8 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGene
   x@Results<-x@Results%>%dplyr::filter((getNumOfGENEs(x))>nGeneCutOff)
   cat("Filtered ",NumFiltered," results with less than ",nGeneCutOff," genes enriched. \n PCutoff:",PVal,"  QCutoff (in ORA)",QVal," GO ORA simplify cutoff:",simplify_cutoff,". \n")
   x@IsAnalysed<-T
+  x@IsClustered<-F
+  x@IsNetworkClustered<-F
   x@dbName<-DBlist[DBlist%in%c("GO","KEGG","Reactome","SelfDefinedGS")]
   message("Finished!\n")
   return(x)
@@ -70,7 +72,6 @@ CalcDUP<-function(x,y){
 
 mapTBs.<-function (Mat, FilterList, mode = "V2")
 {
-  # warning("in Version 5.6 update, new V2 mode is enabled. you can choose the V1 mode to change to the origin mode.\n")
   if (mode == "V2") {
     FilterList <- FilterList[FilterList %in% rownames(Mat)]
   }
@@ -118,7 +119,7 @@ RemoveTerms<-function(x,Item){
   x@DupMatrix<-NULL
   x@IsClustered<-F
   return(x)
-}
+}# need to rewrite. if clustered, generate a new frame. remove selectterms.
 
 SelectTerms<-function(x,Item){
   cat("TIPS:\nThis function only used after calculated duplicated matrix, to select a few pathways for following drawing.\nIf you want to modifiy the object before caluclating duplicate matrix, please use RemoveTerms function instead.\n")
@@ -126,6 +127,9 @@ SelectTerms<-function(x,Item){
   return(x)
 }
 
+ExtractResult<-function(){
+
+}
 # getGMT<-function(){
 #   enesetHypo <- GSEABase::getGmt(file.path(GMTfilePath))#TODO
 # }
