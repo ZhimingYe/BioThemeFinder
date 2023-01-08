@@ -44,6 +44,16 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
     if(nrow(Result00)<=2){
       stop("Not enough enrichment result, please consider a lower P or Q value!\nOr wrong gene set. \n")
     }
+    if(class(x)[1]%in%c("BioThemeFinder.ORA_FC")){
+      geneIDcol<-which(colnames(Result00)=="geneID")
+      for(i in 1:nrow(Result00)){
+        GeneRegType[i]<-DetermineDirection(Result00[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes)
+      }
+      Result00<-Result00%>%dplyr::mutate(RegType=GeneRegType)
+    }
+    if(class(x)[1]%in%c("BioThemeFinder.GSEA")){
+      Result00<-Result00%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
+    }
     x@Results<-Result00
     NumFiltered<-sum((getNumOfGENEs(x))<=nGeneCutOff)
     x@Results<-x@Results%>%dplyr::filter((getNumOfGENEs(x))>nGeneCutOff)
