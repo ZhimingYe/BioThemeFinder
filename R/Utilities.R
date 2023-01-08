@@ -41,6 +41,9 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGene
       stop("Please provide self-defined gene set in Term2GENE argument. \n")
     }
   }
+  if(nrow(Res0)<=2){
+    stop("Not enough enrichment result, please consider a lower P or Q value!\n")
+  }
   x@Results<-Res0%>%as.data.frame()
   NumFiltered<-sum((getNumOfGENEs(x))<=nGeneCutOff)
   x@Results<-x@Results%>%dplyr::filter((getNumOfGENEs(x))>nGeneCutOff)
@@ -114,18 +117,18 @@ RemoveTerms<-function(x,Item){
     x@Results<-x@Results%>%dplyr::filter(!grepl(Item,.$Description))
   }
   if(length(Item)>1){
-    x@Results<-x@Results%>%dplyr::filter(Description%in%Item)
+    x@Results<-x@Results%>%dplyr::filter(!Description%in%Item)#add ! ,fix bug
   }
   x@DupMatrix<-NULL
   x@IsClustered<-F
   return(x)
 }# need to rewrite. if clustered, generate a new frame. remove selectterms.
 
-SelectTerms<-function(x,Item){
-  cat("TIPS:\nThis function only used after calculated duplicated matrix, to select a few pathways for following drawing.\nIf you want to modifiy the object before caluclating duplicate matrix, please use RemoveTerms function instead.\n")
-  x@SelectedResultNames<-Item[Item%in%((x@Results)$Description)]
-  return(x)
-}
+# SelectTerms<-function(x,Item){
+#   cat("TIPS:\nThis function only used after calculated duplicated matrix, to select a few pathways for following drawing.\nIf you want to modifiy the object before caluclating duplicate matrix, please use RemoveTerms function instead.\n")
+#   x@SelectedResultNames<-Item[Item%in%((x@Results)$Description)]
+#   return(x)
+# }
 
 ExtractResult<-function(){
 
