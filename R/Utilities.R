@@ -14,7 +14,7 @@ DetermineDirection<-function(x,NumOfDiff,UPset,DNset){
   return(Type0)
 }
 
-MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneCutOff=3,simplify_cutoff=0.7,Term2GENE){
+MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneCutOff=3,simplify_cutoff=0.7,useMKEGG=T,Term2GENE){
   message("***BioThemeFinder***\nEnrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n")
   if(x@Specics=="non-gene"){
     DBlist<-"SelfDefinedGS"
@@ -30,7 +30,7 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGene
   }
   if("KEGG"%in%DBlist){
     cat("Applying KEGG analysis...\nKEGG database is only available online for non-commercial use. \nSo there might be an error when unable to reach to the KEGG server. \n")
-    Res0<-rbind(Res0,doKEGGanalysis(x=x,PValCutOff = PVal,QValCutOff=QVal))
+    Res0<-rbind(Res0,doKEGGanalysis(x=x,PValCutOff = PVal,QValCutOff=QVal,MKEGG=useMKEGG))
   }
   if("Reactome"%in%DBlist){
     cat("Applying Reactome analysis...\n")

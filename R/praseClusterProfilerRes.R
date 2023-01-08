@@ -13,7 +13,13 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
   for(i in c("GOBP","GOCC","GOMF","GOALL","KEGG","MKEGG","Reactome","Self")){
     if(!is.null(get(i))){
       Collection<-c(Collection,i)
-      cpResult<-(get(i))%>%as.data.frame()%>%dplyr::mutate(Database=i)
+      if(i=="MKEGG"){
+        dbName0<-"KEGG"
+      }
+      else{
+        dbName0<-i
+      }
+      cpResult<-(get(i))%>%as.data.frame()%>%dplyr::mutate(Database=dbName0)
       if(Type=="ORA"){
         if(!"geneID"%in%colnames(cpResult)){
           stop(paste0(i," result is NOT ORA result!\n"))
