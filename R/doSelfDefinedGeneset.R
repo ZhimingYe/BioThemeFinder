@@ -46,8 +46,15 @@ setMethod("doSelfDefinedGeneset",signature(x="BioThemeFinder.ORA_FC"),function(x
   ResultsDF<-SDres
   GeneRegType<-rep("UnKnown",nrow(ResultsDF))
   geneIDcol<-which(colnames(ResultsDF)=="geneID")
-  for(i in 1:nrow(ResultsDF)){
-    GeneRegType[i]<-DetermineDirection(ResultsDF[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes)
+  if(x@Specics%in%c("human","mouse")){
+    for(i in 1:nrow(ResultsDF)){
+      GeneRegType[i]<-DetermineDirection(ResultsDF[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes,OrgDB,T)
+    }
+  }
+  else{
+    for(i in 1:nrow(ResultsDF)){
+      GeneRegType[i]<-DetermineDirection(ResultsDF[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes,needConvert=F)
+    }
   }
   ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=GeneRegType)
   RESdf<-ResultsDF

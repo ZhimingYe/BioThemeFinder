@@ -1,4 +1,8 @@
-DetermineDirection<-function(x,NumOfDiff,UPset,DNset){
+DetermineDirection<-function(x,NumOfDiff,UPset,DNset,OrgDB=NULL,needConvert=F){
+  if(needConvert){
+    UPset<-mapIds(x = OrgDB, keys = UPset,column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
+    DNset<-mapIds(x = OrgDB, keys = DNset,column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
+  }
   GeneList<-unlist(strsplit(x,"/"))
   UPsetNum<-sum(GeneList%in%UPset)
   DNsetNum<-sum(GeneList%in%DNset)
@@ -131,13 +135,7 @@ RemoveTerms<-function(x,Item){
   x@DupMatrix<-NULL
   x@IsClustered<-F
   return(x)
-}# need to rewrite. if clustered, generate a new frame. remove selectterms.
-
-# SelectTerms<-function(x,Item){
-#   cat("TIPS:\nThis function only used after calculated duplicated matrix, to select a few pathways for following drawing.\nIf you want to modifiy the object before caluclating duplicate matrix, please use RemoveTerms function instead.\n")
-#   x@SelectedResultNames<-Item[Item%in%((x@Results)$Description)]
-#   return(x)
-# }
+}
 
 ExtractGenes<-function(x,Cluster){
   clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))

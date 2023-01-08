@@ -1,4 +1,4 @@
-prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NULL,KEGG=NULL,MKEGG=NULL,Reactome=NULL,Self=NULL,nGeneCutOff=3){
+prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NULL,KEGG=NULL,MKEGG=NULL,Reactome=NULL,Self=NULL,nGeneCutOff=3,IsSymbol=F,OrgDB=NULL){
   if(class(x)[1]%in%c("BioThemeFinder.ORA_FC","BioThemeFinder.ORA")){
     Type<-"ORA"
   }
@@ -47,7 +47,7 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
     if(class(x)[1]%in%c("BioThemeFinder.ORA_FC")){
       geneIDcol<-which(colnames(Result00)=="geneID")
       for(i in 1:nrow(Result00)){
-        GeneRegType[i]<-DetermineDirection(Result00[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes)
+        GeneRegType[i]<-DetermineDirection(Result00[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes,OrgDB,needConvert=IsSymbol)
       }
       Result00<-Result00%>%dplyr::mutate(RegType=GeneRegType)
     }

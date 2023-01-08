@@ -43,7 +43,7 @@ setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,PValC
   GeneRegType<-rep("UnKnown",nrow(ResultsDF))
   geneIDcol<-which(colnames(ResultsDF)=="geneID")
   for(i in 1:nrow(ResultsDF)){
-    GeneRegType[i]<-DetermineDirection(ResultsDF[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes)
+    GeneRegType[i]<-DetermineDirection(ResultsDF[i,geneIDcol],NumOfDiff,x@UpRegGenes,x@DownRegGenes,OrgDB,T)
   }
   ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=GeneRegType)
   RESdf<-ResultsDF
