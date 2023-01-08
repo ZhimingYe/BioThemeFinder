@@ -1,6 +1,14 @@
 setGeneric("GenerateDupMat",function(x,...) standardGeneric("GenerateDupMat"))
 
 
+#' @rdname GenerateDupMat
+#' @title generate repetition rate matrix
+#' @param x BioThemeFinder.ORA.
+#'
+#' @return BioThemeFinder object
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("GenerateDupMat",signature(x="BioThemeFinder.ORA"),function(x,...){
   dupmat0<-matrix(nrow=nrow(x@Results),ncol=nrow(x@Results))
   geneIDcol<-which(colnames(x@Results)=="geneID")
@@ -17,6 +25,14 @@ setMethod("GenerateDupMat",signature(x="BioThemeFinder.ORA"),function(x,...){
 })
 
 
+#' @rdname GenerateDupMat
+#' @title generate repetition rate matrix
+#' @param x BioThemeFinder.ORA_FC.
+#'
+#' @return BioThemeFinder object
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("GenerateDupMat",signature(x="BioThemeFinder.ORA_FC"),function(x,...){
   dupmat0<-matrix(nrow=nrow(x@Results),ncol=nrow(x@Results))
   geneIDcol<-which(colnames(x@Results)=="geneID")
@@ -32,6 +48,14 @@ setMethod("GenerateDupMat",signature(x="BioThemeFinder.ORA_FC"),function(x,...){
   return(x)
 })
 
+#' @rdname GenerateDupMat
+#' @title generate repetition rate matrix
+#' @param x BioThemeFinder.GSEA.
+#'
+#' @return BioThemeFinder object
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("GenerateDupMat",signature(x="BioThemeFinder.GSEA"),function(x,...){
   dupmat0<-matrix(nrow=nrow(x@Results),ncol=nrow(x@Results))
   geneIDcol<-which(colnames(x@Results)=="core_enrichment")

@@ -4,7 +4,7 @@
 *.xls
 *.docx
 *.rds
-
+*.R2s
 # History files
 .Rhistory
 .Rapp.history

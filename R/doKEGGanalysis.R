@@ -2,12 +2,12 @@
 setGeneric("doKEGGanalysis",function(x,PValCutOff,MKEGG,...) standardGeneric("doKEGGanalysis"))
 
 setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA"),function(x,PValCutOff,MKEGG,QValCutOff,...){
-  if(x@Specics=="human"){
+  if(x@Species=="human"){
     orgid<-"hsa"
     require(org.Hs.eg.db)
     OrgDB<-org.Hs.eg.db
   }
-  if(x@Specics=="mouse"){
+  if(x@Species=="mouse"){
     orgid<-"mmu"
     require(org.Mm.eg.db)
     OrgDB<-org.Mm.eg.db
@@ -24,12 +24,12 @@ setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA"),function(x,PValCutO
 
 setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,PValCutOff,MKEGG,QValCutOff,...){
   NumOfDiff<-x@CutOff_Reg
-  if(x@Specics=="human"){
+  if(x@Species=="human"){
     orgid<-"hsa"
     require(org.Hs.eg.db)
     OrgDB<-org.Hs.eg.db
   }
-  if(x@Specics=="mouse"){
+  if(x@Species=="mouse"){
     orgid<-"mmu"
     require(org.Mm.eg.db)
     OrgDB<-org.Mm.eg.db
@@ -51,12 +51,12 @@ setMethod("doKEGGanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,PValC
 })
 
 setMethod("doKEGGanalysis",signature(x="BioThemeFinder.GSEA"),function(x,PValCutOff,MKEGG,...){
-  if(x@Specics=="human"){
+  if(x@Species=="human"){
     orgid<-"hsa"
     require(org.Hs.eg.db)
     OrgDB<-org.Hs.eg.db
   }
-  if(x@Specics=="mouse"){
+  if(x@Species=="mouse"){
     orgid<-"mmu"
     require(org.Mm.eg.db)
     OrgDB<-org.Mm.eg.db

@@ -1,6 +1,19 @@
 setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,showStart=NULL,showEnd=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
 
 
+#' @rdname PathwayStatsPlot
+#' @title plot dotplot showing the statstical result of BioThemeFinder
+#' @param x BioThemeFinder.ORA.
+#' @param clusterType can be one of "MatrixResult", "NetworkResult"
+#' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
+#' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
+#' @param orderBy can be "pValue","GeneRatio","Counts"
+#' @param col_low defining color
+#' @param col_high defining color
+#' @return a ggplot2 object, add + facet_grid(~Cluster) to display the clustered result. remove + facet_grid(~othergroup) for unclustered results
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
@@ -38,6 +51,19 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
 })
 
 
+#' @rdname PathwayStatsPlot
+#' @title plot dotplot showing the statstical result of BioThemeFinder
+#' @param x BioThemeFinder.ORA.FC
+#' @param clusterType can be one of "MatrixResult", "NetworkResult"
+#' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
+#' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
+#' @param orderBy can be "pValue","GeneRatio","Counts"
+#' @param col_low defining color
+#' @param col_high defining color
+#' @return a ggplot2 object, add + facet_grid(~Cluster) to display the clustered result. remove + facet_grid(~othergroup) for unclustered results
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
@@ -76,7 +102,19 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 
 
 
-setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,col_low="#1e6091",col_high="#99d98c",...){
+#' @rdname PathwayStatsPlot
+#' @title plot dotplot showing the statstical result of BioThemeFinder
+#' @param x BioThemeFinder.GSEA
+#' @param clusterType can be one of "MatrixResult", "NetworkResult"
+#' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the NES)
+#' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the NES)
+#' @param col_low defining color
+#' @param col_high defining color
+#' @return a ggplot2 object, add + facet_grid(~Cluster) to display the clustered result. remove + facet_grid(~othergroup) for unclustered results
+#' @export
+#' @author Zhiming Ye
+#' @examples
+setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,col_low="#1e6091",col_high="#99d98c",...){
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
       showEnd<-30

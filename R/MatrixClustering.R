@@ -1,10 +1,12 @@
 DupClustering.Fuzzy<-function(x,k,...){
+  require(fclust)
   res.fcm <- fclust::Fclust(x@DupMatrix, k=k)
   kk<-res.fcm[["clus"]][,-2]%>%as.data.frame()
   colnames(kk)[1]<-"Cluster"
   return(kk)
 }
 DupClustering.NMF<-function(x,k,method="brunet",...){
+  require(NMF)
   if(nrow(x@DupMatrix)>=1000){
     message("Too many pathways! NMF can be very slow!\n")
   }
@@ -30,8 +32,22 @@ DupClustering.PAM<-function(x,k,method1="euclidean",...){
   colnames(res0)[1]<-"Cluster"
   return(res0)
 }
-
-DupClustering<-function(x,k,method="nmf",dist_method,cluster_method,self_def=F){
+#' @rdname MatrixClustering
+#' @title Cluster repetition rate matrix based on matrix-based methods
+#'
+#' @param x a BioThemeFinder object
+#' @param k number of clusters. You can draw PathwayHeatmap to visualize preliminarily and determine the number of clusters
+#' @param method can be "nmf","hc","pam","fuzzy"
+#' @param dist_method default:euclidean
+#' @param cluster_method default:NMF~brunet, hc~ward.D2
+#' @param self_def whether re-define the dist_method or cluster_method or not
+#' @return a BioThemeFinder object
+#' @export
+#' @author Zhiming Ye
+#'
+#' @examples
+MatrixClustering<-function(x,k,method="nmf",dist_method,cluster_method,self_def=F){
+  method<-match.arg(method,c("nmf","hc","pam","fuzzy"))
   if("GSCluster"%in%colnames(x@Results)){
     x@Results<-x@Results%>%dplyr::select(-GSCluster)
     message("Old Cluster has been removed.\n")

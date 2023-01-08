@@ -1,3 +1,13 @@
+#' @rdname NetworkClustering
+#' @title Cluster repetition rate matrix based on network-based greedy optimization of modularity method
+#' @param x a BioThemeFinder object
+#' @param EdgeCutoff cutoff of repetition rate
+#' @param ...
+#'
+#' @return BioThemeFinder object
+#' @export
+#' @author Zhiming Ye
+#' @examples
 NetworkClustering<-function(x,EdgeCutoff=0.5,...){
   if("NetworkCluster"%in%colnames(x@Results)){
     x@Results<-x@Results%>%dplyr::select(-NetworkCluster)
@@ -31,6 +41,17 @@ NetworkClustering<-function(x,EdgeCutoff=0.5,...){
   return(x)
 }
 
+#' @rdname PlotNetwork
+#' @title plot network
+#' @param x a BioThemeFinder object
+#' @param method igraph or ggplot2
+#' @param Label
+#' @param ...
+#'
+#' @return
+#' @export
+#' @author Zhiming Ye
+#' @examples
 PlotNetwork<-function(x,method="igraph",Label=T,...){
   if(x@IsNetworkClustered==T){
     message("For better viewing, please zoom the network, or output it as a PDF and zoom in to find clusters")

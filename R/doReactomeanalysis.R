@@ -2,12 +2,12 @@
 setGeneric("doReactomeanalysis",function(x,PValCutOff,...) standardGeneric("doReactomeanalysis"))
 
 setMethod("doReactomeanalysis",signature(x="BioThemeFinder.ORA"),function(x,PValCutOff,QValCutOff,...){
-  if(x@Specics=="human"){
+  if(x@Species=="human"){
     orgid<-"human"
     require(org.Hs.eg.db)
     OrgDB<-org.Hs.eg.db
   }
-  if(x@Specics=="mouse"){
+  if(x@Species=="mouse"){
     orgid<-"mouse"
     require(org.Mm.eg.db)
     OrgDB<-org.Mm.eg.db
@@ -20,12 +20,12 @@ setMethod("doReactomeanalysis",signature(x="BioThemeFinder.ORA"),function(x,PVal
 
 setMethod("doReactomeanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,PValCutOff,QValCutOff,...){
   NumOfDiff<-x@CutOff_Reg
-  if(x@Specics=="human"){
+  if(x@Species=="human"){
     orgid<-"human"
     require(org.Hs.eg.db)
     OrgDB<-org.Hs.eg.db
   }
-  if(x@Specics=="mouse"){
+  if(x@Species=="mouse"){
     orgid<-"mouse"
     require(org.Mm.eg.db)
     OrgDB<-org.Mm.eg.db
@@ -43,12 +43,12 @@ setMethod("doReactomeanalysis",signature(x="BioThemeFinder.ORA_FC"),function(x,P
 })
 
 setMethod("doReactomeanalysis",signature(x="BioThemeFinder.GSEA"),function(x,PValCutOff,...){
-  if(x@Specics=="human"){
+  if(x@Species=="human"){
     orgid<-"human"
     require(org.Hs.eg.db)
     OrgDB<-org.Hs.eg.db
   }
-  if(x@Specics=="mouse"){
+  if(x@Species=="mouse"){
     orgid<-"mouse"
     require(org.Mm.eg.db)
     OrgDB<-org.Mm.eg.db

@@ -1,3 +1,24 @@
+#' @rdname prase.clusterProfiler.result
+#' @title prase result from clusterProfiler
+#'
+#' @param x A BioThemeFinder object
+#' @param GOBP clusterProfiler object
+#' @param GOCC clusterProfiler object
+#' @param GOMF clusterProfiler object
+#' @param GOALL clusterProfiler object
+#' @param KEGG clusterProfiler object
+#' @param MKEGG clusterProfiler object
+#' @param Reactome clusterProfiler object
+#' @param Self self-defined gene collection
+#' @param nGeneCutOff Enriched pathways with a gene counts less than that value were filtered
+#' @param IsSymbol True~SYMBOL (have done "setreadable" function), not~ENTREZID. NOTE:It is recommended to perform setreadable operation before importing BioThemeFinder
+#' @param OrgDB the org.DB using to convert ID
+#'
+#' @return A BioThemeFinder object
+#' @export
+#' @author Zhiming Ye
+#'
+#' @examples
 prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NULL,KEGG=NULL,MKEGG=NULL,Reactome=NULL,Self=NULL,nGeneCutOff=3,IsSymbol=F,OrgDB=NULL){
   if(class(x)[1]%in%c("BioThemeFinder.ORA_FC","BioThemeFinder.ORA")){
     Type<-"ORA"
@@ -5,7 +26,7 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
   else{
     Type<-"GSEA"
   }
-  if(x@Specics=="non-gene"){
+  if(x@Species=="non-gene"){
     message("Please only input in Self because of non-gene input.\n")
   }
   Collection<-c()
@@ -30,7 +51,7 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
           stop(paste0(i," result is NOT GSEA result!\n"))
         }
       }
-      if((x@Specics!="non-gene")|(x@Specics=="non-gene"&i=="Self")){
+      if((x@Species!="non-gene")|(x@Species=="non-gene"&i=="Self")){
         Result00<-rbind(Result00,cpResult)
       }
     }

@@ -17,10 +17,25 @@ DetermineDirection<-function(x,NumOfDiff,UPset,DNset,OrgDB=NULL,needConvert=F){
   }
   return(Type0)
 }
-
-MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneCutOff=3,simplify_cutoff=0.7,useMKEGG=T,Term2GENE){
-  message("***BioThemeFinder***\nEnrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n")
-  if(x@Specics=="non-gene"){
+#' @rdname MultiDBanalysis
+#' @title do ORA or GSEA in multi-databases
+#'
+#' @param x a BioThemeFinder object
+#' @param PVal Pvalue cut-off
+#' @param QVal Qvalue cut-off (in ORA)
+#' @param DBlist a vector, Specify in which databases the analysis needs to be completed, can be GO, KEGG, Reactome, SelfDefinedGS, for example :c("GO","KEGG","Reactome")
+#' @param nGeneCutOff Enriched pathways with a gene counts less than that value were filtered
+#' @param simplify_cutoff In GO analysis, the cut off of simplify function (from clusterProfiler)
+#' @param useMKEGG when doing KEGG, if this parameter = T, analysis in both of KEGG pathways and KEGG modules
+#' @param Term2GENE input self-defined gene collection, one column contains the terms and the other one contains the genes
+#' @return A BioThemeFinder object
+#' @export
+#' @author Zhiming Ye. This function is powered by clusterProfiler from Guangchuang Yu Lab at southern medical university.
+#'
+#' @examples
+MultiDBanalysis<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneCutOff=3,simplify_cutoff=0.7,useMKEGG=T,Term2GENE){
+  message(paste0("***BioThemeFinder***\nEnrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n"))
+  if(x@Species=="non-gene"){
     DBlist<-"SelfDefinedGS"
     message("No-Genes! please use self-defined collection to enrich\n")
   }
@@ -121,7 +136,16 @@ setMethod("getNumOfGENEs",signature(x="BioThemeFinder.GSEA"),function(x,...){
 
 
 
-
+#' @rdname RemoveTerms
+#' @title Remove enriched terms based on regular expression or vector
+#'
+#' @param x a BioThemeFinder object
+#' @param Item When only one parameter is passed in, the result is filtered using the parameter as a regular expression, and the result matching the regular expression is filtered. When a vector is passed in, all the pathway names contained in the vector are erased from the result.
+#' @return A BioThemeFinder object
+#' @export
+#' @author Zhiming Ye.
+#'
+#' @examples
 RemoveTerms<-function(x,Item){
   if(nrow(x@Results)<1){
     stop("Please first do analysis before remove.\n")
@@ -136,7 +160,16 @@ RemoveTerms<-function(x,Item){
   x@IsClustered<-F
   return(x)
 }
-
+#' @rdname ExtractGenes
+#' @title Extracting genes involved in a specified clustering module
+#'
+#' @param x a BioThemeFinder object
+#' @param Cluster can be MatrixResult or NetworkResult
+#' @return A data frame
+#' @export
+#' @author Zhiming Ye.
+#'
+#' @examples
 ExtractGenes<-function(x,Cluster){
   clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
   if(Cluster=="MatrixResult"){
@@ -158,12 +191,12 @@ ExtractGenes<-function(x,Cluster){
       genelst<-unlist(strsplit(DF0$core_enrichment,"/"))
     }
     doAnn<-F
-    if(x@Specics=="human"){
+    if(x@Species=="human"){
       require(org.Hs.eg.db)
       OrgDB = org.Hs.eg.db
       doAnn<-T
     }
-    if(x@Specics=="mouse"){
+    if(x@Species=="mouse"){
       require(org.Mm.eg.db)
       OrgDB = org.Mm.eg.db
       doAnn<-T
@@ -175,15 +208,35 @@ ExtractGenes<-function(x,Cluster){
     else{
       REsDF<-data.frame(Gene=genelst,Cluster=Cluster)
     }
-    #casewhen
     return(REsDF)
   }
   else{
     stop("unclustered.\n")
   }
 }
-
-write.resultDF<-function(x,file){
-  write.csv(x@Results,file=file)
+#' @rdname resultDF
+#' @title Extracting the enrichment result
+#'
+#' @param x a BioThemeFinder object
+#' @return A data frame
+#' @export
+#' @author Zhiming Ye
+#'
+#' @examples
+resultDF<-function(x,file){
+  return(x@Results)
 }
 
+.onAttach<-function(){
+  # if(!require(ComplexHeatmap)){BiocManager::install("ComplexHeatmap")}
+  # if(!require(RColorBrewer)){install.packages("RColorBrewer")}
+  # if(!require(circlize)){install.packages("circlize")}
+  # if(!require(NMF)){install.packages("NMF")}
+  # if(!require(org.Hs.eg.db)){BiocManager::install("org.Hs.eg.db")}
+  # if(!require(org.Mm.eg.db)){BiocManager::install("org.Mm.eg.db")}
+  require(clusterProfiler)
+  require(ReactomePA)
+  cat("\n\n")
+  message("****BioThemeFinder**** V1.0\nAuthor:Zhiming Ye")
+  cat(paste0("Enrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n"))
+}

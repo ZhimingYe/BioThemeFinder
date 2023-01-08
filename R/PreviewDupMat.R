@@ -1,7 +1,20 @@
 setGeneric("PathwayHeatmap",function(x,using_cluster=T,...) standardGeneric("PathwayHeatmap"))
 
 
+#' @rdname PathwayHeatmap
+#' @title Draw heatmap of repetition rate matrix
+#' @param x BioThemeFinder.ORA.
+#' @param using_cluster Draw figure using cluster result or not
+#' @param clusterType can be MatrixResult or NetworkResult
+#' @return
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cluster=T,clusterType="NetworkResult",...){
+  clusterType<-
+  require(ComplexHeatmap)
+  require(RColorBrewer)
+  require(circlize)
   do_cluster<-F
   if(("GSCluster"%in%colnames(x@Results)&using_cluster)|("NetworkCluster"%in%colnames(x@Results)&using_cluster)){
     message("Drawing using existed matrix cluster.\nif want to remove cluster, Please use removeCluster function.\n")
@@ -40,7 +53,19 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cl
 })
 
 
+#' @rdname PathwayHeatmap
+#' @title Draw heatmap of repetition rate matrix
+#' @param x BioThemeFinder.ORA.FC
+#' @param using_cluster Draw figure using cluster result or not
+#' @param clusterType can be MatrixResult or NetworkResult
+#' @return
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA_FC"),function(x,using_cluster=T,clusterType="NetworkResult",...){
+  require(ComplexHeatmap)
+  require(RColorBrewer)
+  require(circlize)
   do_cluster<-F
   if(("GSCluster"%in%colnames(x@Results)&using_cluster)|("NetworkCluster"%in%colnames(x@Results)&using_cluster)){
     message("Drawing using existed matrix cluster.\nif want to remove cluster, Please use removeCluster function.\n")
@@ -84,7 +109,19 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA_FC"),function(x,using
   }
 })
 
+#' @rdname PathwayHeatmap
+#' @title Draw heatmap of repetition rate matrix
+#' @param x BioThemeFinder.GSEA
+#' @param using_cluster Draw figure using cluster result or not
+#' @param clusterType can be MatrixResult or NetworkResult
+#' @return
+#' @export
+#' @author Zhiming Ye
+#' @examples
 setMethod("PathwayHeatmap",signature(x="BioThemeFinder.GSEA"),function(x,using_cluster=T,clusterType="NetworkResult",...){
+  require(ComplexHeatmap)
+  require(RColorBrewer)
+  require(circlize)
   do_cluster<-F
   if(("GSCluster"%in%colnames(x@Results)&using_cluster)|("NetworkCluster"%in%colnames(x@Results)&using_cluster)){
     message("Drawing using existed matrix cluster.\nif want to remove cluster, Please use removeCluster function.\n")
