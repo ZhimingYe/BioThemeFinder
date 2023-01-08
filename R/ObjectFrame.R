@@ -40,17 +40,20 @@ setClass("BioThemeFinder.GSEA",slots=list(RankedGenes="numeric",
                                           SelectedResultNames="character"))
 
 Create.newBioThemeFinder.ORA<-function (Gene,FromType = "SYMBOL", Specics="human"){
+  Specics <- match.arg(Specics, c("human", "mouse","non-gene"))
   if(Specics=="human"){
     OrgDB = org.Hs.eg.db
   }
   if(Specics=="mouse"){
     OrgDB = org.Mm.eg.db
   }
-  if(!Specics%in%c("human","mouse")){
-    warning("unsupported specics.\n")
-  }
   Genetable <- data.frame(Gene=Gene)
-  ENTREZIDtable <- clusterProfiler::bitr(Genetable$Gene, fromType = FromType,toType = "ENTREZID", OrgDb = OrgDB)
+  if(Specics!="non-gene"){
+    ENTREZIDtable <- clusterProfiler::bitr(Genetable$Gene, fromType = FromType,toType = "ENTREZID", OrgDb = OrgDB)
+  }
+  else{
+    ENTREZIDtable<-data.frame(ENTREZID=Genetable$Gene)
+  }
   GSresult<-new("BioThemeFinder.ORA")
   GSresult@WholeGenes<-ENTREZIDtable$ENTREZID
   GSresult@Specics<-Specics
@@ -60,17 +63,25 @@ Create.newBioThemeFinder.ORA<-function (Gene,FromType = "SYMBOL", Specics="human
 }
 
 Create.newBioThemeFinder.ORAwithFC<-function (Gene, log2FC,Pvalue,FCcutoff=1,PvalueCutOff=0.05,FromType = "SYMBOL", Specics="human",CntsOfDiffGene=2){
+  Specics <- match.arg(Specics, c("human", "mouse","non-gene"))
   if(Specics=="human"){
     OrgDB = org.Hs.eg.db
   }
   if(Specics=="mouse"){
     OrgDB = org.Mm.eg.db
   }
-  if(!Specics%in%c("human","mouse")){
-    warning("unsupported specics.\n")
+  if(!is.null(PvalueCutOff)){
+    Genetable <- data.frame(Gene=Gene,log2FC=log2FC,PVal=Pvalue)%>%dplyr::filter(Pvalue<PvalueCutOff)%>%dplyr::filter(abs(log2FC)>FCcutoff)
   }
-  Genetable <- data.frame(Gene=Gene,log2FC=log2FC,PVal=Pvalue)%>%dplyr::filter(Pvalue<PvalueCutOff)%>%dplyr::filter(abs(log2FC)>FCcutoff)
-  ENTREZIDtable <- clusterProfiler::bitr(Genetable$Gene, fromType = FromType,toType = "ENTREZID", OrgDb = OrgDB)
+  else{
+    Genetable <- data.frame(Gene=Gene,log2FC=log2FC)%>%dplyr::filter(abs(log2FC)>FCcutoff)
+  }
+  if(Specics!="non-gene"){
+    ENTREZIDtable <- clusterProfiler::bitr(Genetable$Gene, fromType = FromType,toType = "ENTREZID", OrgDb = OrgDB)
+  }
+  else{
+    ENTREZIDtable<-data.frame(Gene=Genetable$Gene,ENTREZID=Genetable$Gene)
+  }
   colnames(ENTREZIDtable)[1] <- "Gene"
   Genetable <- Genetable %>% left_join(ENTREZIDtable) %>% arrange(desc(log2FC))%>%na.omit()
   GSElist <- as.numeric(Genetable$log2FC)
@@ -88,17 +99,20 @@ Create.newBioThemeFinder.ORAwithFC<-function (Gene, log2FC,Pvalue,FCcutoff=1,Pva
 }
 
 Create.newBioThemeFinder.GSEA<-function (Gene, log2FC,FromType = "SYMBOL", Specics="human"){
+  Specics <- match.arg(Specics, c("human", "mouse","non-gene"))
   if(Specics=="human"){
     OrgDB = org.Hs.eg.db
   }
   if(Specics=="mouse"){
     OrgDB = org.Mm.eg.db
   }
-  if(!Specics%in%c("human","mouse")){
-    warning("unsupported specics.\n")
-  }
   Genetable <- data.frame(Gene=Gene,log2FC=log2FC)
-  ENTREZIDtable <- clusterProfiler::bitr(Genetable$Gene, fromType = FromType,toType = "ENTREZID", OrgDb = OrgDB)
+  if(Specics!="non-gene"){
+    ENTREZIDtable <- clusterProfiler::bitr(Genetable$Gene, fromType = FromType,toType = "ENTREZID", OrgDb = OrgDB)
+  }
+  else{
+    ENTREZIDtable<-data.frame(Gene=Genetable$Gene,ENTREZID=Genetable$Gene)
+  }
   colnames(ENTREZIDtable)[1] <- "Gene"
   Genetable <- Genetable %>% left_join(ENTREZIDtable) %>% arrange(desc(log2FC))%>%na.omit()
   GSElist <- as.numeric(Genetable$log2FC)

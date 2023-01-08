@@ -5,6 +5,9 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
   else{
     Type<-"GSEA"
   }
+  if(x@Specics=="non-gene"){
+    message("Please only input in Self because of non-gene input.\n")
+  }
   Collection<-c()
   Result00<-data.frame()
   for(i in c("GOBP","GOCC","GOMF","GOALL","KEGG","MKEGG","Reactome","Self")){
@@ -21,7 +24,9 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
           stop(paste0(i," result is NOT GSEA result!\n"))
         }
       }
-      Result00<-rbind(Result00,cpResult)
+      if((x@Specics!="non-gene")|(x@Specics=="non-gene"&i=="Self")){
+        Result00<-rbind(Result00,cpResult)
+      }
     }
   }
   if(nrow(Result00)>0){

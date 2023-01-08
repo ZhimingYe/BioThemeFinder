@@ -16,6 +16,10 @@ DetermineDirection<-function(x,NumOfDiff,UPset,DNset){
 
 MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneCutOff=3,simplify_cutoff=0.7,Term2GENE){
   message("***BioThemeFinder***\nEnrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n")
+  if(x@Specics=="non-gene"){
+    DBlist<-"SelfDefinedGS"
+    message("No-Genes! please use self-defined collection to enrich\n")
+  }
   Res0<-data.frame()
   if(sum(c("GO","KEGG","Reactome")%in%DBlist)<1){
     stop("Can't find any database!\n")
@@ -42,7 +46,7 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGene
     }
   }
   if(nrow(Res0)<=2){
-    stop("Not enough enrichment result, please consider a lower P or Q value!\n")
+    stop("Not enough enrichment result, please consider a lower P or Q value!\nOr wrong gene set. \n")
   }
   x@Results<-Res0%>%as.data.frame()
   NumFiltered<-sum((getNumOfGENEs(x))<=nGeneCutOff)
