@@ -139,9 +139,53 @@ RemoveTerms<-function(x,Item){
 #   return(x)
 # }
 
-ExtractResult<-function(){
-
+ExtractGenes<-function(x,Cluster){
+  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
+  if(Cluster=="MatrixResult"){
+    ClsID<-"GSCluster"
+    cat("Cluster list:\n")
+    print(table(x@Results$GSCluster))
+  }
+  if(Cluster=="NetworkResult"){
+    ClsID<-"NetworkCluster"
+    cat("Cluster list:\n")
+    print(table(x@Results$NetworkCluster))
+  }
+  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))!=0){
+    DF0<-x@Results%>%dplyr::filter(!!sym(ClsID)==Cluster)
+    if("geneID"%in%colnames(DF0)){
+      genelst<-unlist(strsplit(DF0$geneID,"/"))
+    }
+    if("core_enrichment"%in%colnames(DF0)){
+      genelst<-unlist(strsplit(DF0$core_enrichment,"/"))
+    }
+    doAnn<-F
+    if(x@Specics=="human"){
+      require(org.Hs.eg.db)
+      OrgDB = org.Hs.eg.db
+      doAnn<-T
+    }
+    if(x@Specics=="mouse"){
+      require(org.Mm.eg.db)
+      OrgDB = org.Mm.eg.db
+      doAnn<-T
+    }
+    if(doAnn==T){
+      Names0<-mapIds(x = OrgDB, keys = genelst,column = "GENENAME", keytype = "SYMBOL", multiVals = "first")
+      REsDF<-data.frame(Gene=genelst,Name=Names0,Cluster=Cluster)
+    }
+    else{
+      REsDF<-data.frame(Gene=genelst,Cluster=Cluster)
+    }
+    #casewhen
+    return(REsDF)
+  }
+  else{
+    stop("unclustered.\n")
+  }
 }
-# getGMT<-function(){
-#   enesetHypo <- GSEABase::getGmt(file.path(GMTfilePath))#TODO
-# }
+
+write.resultDF<-function(x,file){
+  write.csv(x@Results,file=file)
+}
+
