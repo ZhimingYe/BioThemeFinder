@@ -1,8 +1,8 @@
 NetworkClustering<-function(x,EdgeCutoff=0.5,...){
   if("NetworkCluster"%in%colnames(x@Results)){
     x@Results<-x@Results%>%dplyr::select(-NetworkCluster)
-    x@Network<-NULL
-    x@Communities<-NULL
+    DFempty<-data.frame(from=c("1","2","3"),to=c("3","2","1"))
+    x@Network<-igraph::graph.data.frame(DFempty, directed = FALSE)
     message("Old Cluster has been removed.\n")
   }
   OriginDF<-x@DupMatrix
@@ -24,8 +24,8 @@ NetworkClustering<-function(x,EdgeCutoff=0.5,...){
   FavorsDnPathways<-paste0(FavorsDnPathwaysdf$Database,":",FavorsDnPathwaysdf$Description)
   V(x@Network)$color<-case_when(V(x@Network)$name%in%FavorsUpPathways~"#e5989b",V(x@Network)$name%in%FavorsDnPathways~"#023e8a",T~"#dad7cd")
   V(x@Network)$ggcolor<-case_when(V(x@Network)$name%in%FavorsUpPathways~"UP",V(x@Network)$name%in%FavorsDnPathways~"DOWN",T~"UNKNOWN")
-  ResDF<-data.frame(Description=x@Communities$names,NetworkCluster=x@Communities$membership)
-  suppressMessages(x@Results<-x@Results%>%left_join(ResDF))
+  ResDF<-data.frame(Description2=x@Communities$names,NetworkCluster=x@Communities$membership)
+  suppressMessages(x@Results<-x@Results%>%dplyr::mutate(Description2=paste0(x@Results$Database,":",x@Results$Description))%>%left_join(ResDF)%>%dplyr::select(-Description2))
   #NetworkCls.Argument
   x@IsNetworkClustered<-T
   return(x)
@@ -45,17 +45,19 @@ PlotNetwork<-function(x,method="igraph",Label=T,...){
     if(method=="ggplot2"&Label==T){
       xr<-x
       V(xr@Network)$ggcommunity<-xr@Communities$membership
-      ggraph(xr@Network,layout = "fr")+
+      p<-ggraph(xr@Network,layout = "fr")+
         geom_edge_arc(strength = 0.2, width = 0.5, alpha = 0.8)+
         geom_node_point(aes(color = factor(ggcommunity),shape=factor(ggcolor,levels = c("UNKNOWN","UP","DOWN"))),size=10) +
         geom_node_text(aes(label = name), repel = F,alpha = 0.8) +theme_void()+labs(color="Communitiy Cluster",shape="UP/DOWN regulated")
+      return(p)
     }
     if(method=="ggplot2"&Label==F){
       xr<-x
       V(xr@Network)$ggcommunity<-xr@Communities$membership
-      ggraph(xr@Network,layout = "fr")+
+      p<-ggraph(xr@Network,layout = "fr")+
         geom_edge_arc(strength = 0.2, width = 0.5, alpha = 0.8)+
         geom_node_point(aes(color = factor(ggcommunity),shape=factor(ggcolor,levels = c("UNKNOWN","UP","DOWN"))),size=10)+theme_void()+labs(color="Communitiy Cluster",shape="UP/DOWN regulated")
+      return(p)
     }
   }
   else{
