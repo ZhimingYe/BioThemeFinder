@@ -30,6 +30,14 @@ prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NUL
     }
   }
   if(nrow(Result00)>0){
+    if(sum(duplicated(Result00$Description))>0){
+      cat("Duplicated Terms:        will only keep the first\n")
+      print(Result00$Description[duplicated(Result00$Description)])
+      Result00<-Result00%>%dplyr::filter(!duplicated(Result00$Description))
+    }
+    if(nrow(Result00)<=2){
+      stop("Not enough enrichment result, please consider a lower P or Q value!\nOr wrong gene set. \n")
+    }
     x@Results<-Result00
     NumFiltered<-sum((getNumOfGENEs(x))<=nGeneCutOff)
     x@Results<-x@Results%>%dplyr::filter((getNumOfGENEs(x))>nGeneCutOff)

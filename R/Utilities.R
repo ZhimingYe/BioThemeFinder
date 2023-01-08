@@ -45,6 +45,11 @@ MultiDBanalysis0<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGene
       stop("Please provide self-defined gene set in Term2GENE argument. \n")
     }
   }
+  if(sum(duplicated(Res0$Description))>0){
+    cat("Duplicated Terms:        will only keep the first\n")
+    print(Res0$Description[duplicated(Res0$Description)])
+    Res0<-Res0%>%dplyr::filter(!duplicated(Res0$Description))
+  }
   if(nrow(Res0)<=2){
     stop("Not enough enrichment result, please consider a lower P or Q value!\nOr wrong gene set. \n")
   }
