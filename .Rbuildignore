@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 *.csv
 *-Ex.R
+./figs/*
