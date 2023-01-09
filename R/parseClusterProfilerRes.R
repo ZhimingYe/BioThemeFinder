@@ -1,5 +1,5 @@
-#' @rdname prase.clusterProfiler.result
-#' @title prase result from clusterProfiler
+#' @rdname parse.clusterProfiler.result
+#' @title parse result from clusterProfiler
 #'
 #' @param x A BioThemeFinder object
 #' @param GOBP clusterProfiler object
@@ -19,7 +19,7 @@
 #' @author Zhiming Ye
 #'
 #' @examples
-prase.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NULL,KEGG=NULL,MKEGG=NULL,Reactome=NULL,Self=NULL,nGeneCutOff=3,IsSymbol=F,OrgDB=NULL){
+parse.clusterProfiler.result<-function(x,GOBP=NULL,GOCC=NULL,GOMF=NULL,GOALL=NULL,KEGG=NULL,MKEGG=NULL,Reactome=NULL,Self=NULL,nGeneCutOff=3,IsSymbol=F,OrgDB=NULL){
   if(class(x)[1]%in%c("BioThemeFinder.ORA_FC","BioThemeFinder.ORA")){
     Type<-"ORA"
   }
