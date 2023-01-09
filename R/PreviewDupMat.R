@@ -46,12 +46,13 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cl
                                                                                                       `KEGG`="#f4a261",
                                                                                                       `Reactome`="#e76f51",
                                                                                                     `Self`="#e5989b")))
+  rownames(dupmat0)[nchar(rownames(dupmat0))>80]<-substr(rownames(dupmat0)[nchar(rownames(dupmat0))>80],1,80)
   if(!do_cluster){
-    Heatmap(dupmat0,name = "Duplicate Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN)
   }
   else{
     warning(paste0("using ",clusterType," to display result.\n"))
-    Heatmap(dupmat0,name = "Duplicate Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
   }
 })
 
@@ -102,12 +103,13 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA_FC"),function(x,using
                                                                                            Change=c(`Favor_UpReg`="#e63946",
                                                                                                     `Favor_DnReg`="#1d3557",
                                                                                                     `UnKnown`="#fefae0")))
+  rownames(dupmat0)[nchar(rownames(dupmat0))>80]<-substr(rownames(dupmat0)[nchar(rownames(dupmat0))>80],1,80)
   if(!do_cluster){
-    Heatmap(dupmat0,name = "Duplicate Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN)
   }
   else{
     warning(paste0("using ",clusterType," to display result.\n"))
-    Heatmap(dupmat0,name = "Duplicate Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
   }
 })
 
@@ -155,12 +157,13 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.GSEA"),function(x,using_c
                                                                                                       `Reactome`="#e76f51",
                                                                                              `Self`="#e5989b"),
                                                                                             `NES` = colorRamp2(c(min(x@Results$NES), max(x@Results$NES)), c("#0e6ba8","#e56b6f"))))
+  rownames(dupmat0)[nchar(rownames(dupmat0))>80]<-substr(rownames(dupmat0)[nchar(rownames(dupmat0))>80],1,80)
   if(!do_cluster){
-    Heatmap(dupmat0,name = "Duplicate Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN)
   }
   else{
     warning(paste0("using ",clusterType," to display result.\n"))
-    Heatmap(dupmat0,name = "Duplicate Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
   }
 
 })

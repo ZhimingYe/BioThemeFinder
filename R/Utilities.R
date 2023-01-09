@@ -1,7 +1,7 @@
 DetermineDirection<-function(x,NumOfDiff,UPset,DNset,OrgDB=NULL,needConvert=F){
   if(needConvert){
-    UPset<-mapIds(x = OrgDB, keys = UPset,column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
-    DNset<-mapIds(x = OrgDB, keys = DNset,column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
+    suppressMessages(UPset<-mapIds(x = OrgDB, keys = UPset,column = "SYMBOL", keytype = "ENTREZID", multiVals = "first"))
+    suppressMessages(DNset<-mapIds(x = OrgDB, keys = DNset,column = "SYMBOL", keytype = "ENTREZID", multiVals = "first"))
   }
   GeneList<-unlist(strsplit(x,"/"))
   UPsetNum<-sum(GeneList%in%UPset)

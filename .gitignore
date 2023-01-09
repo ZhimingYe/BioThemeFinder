@@ -5,6 +5,7 @@
 *.docx
 *.rds
 *.R2s
+*.zip
 # History files
 .Rhistory
 .Rapp.history
@@ -46,3 +47,4 @@ vignettes/*.pdf
 .Renviron
 
 .DS_Store
+inst/doc
