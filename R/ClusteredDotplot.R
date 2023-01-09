@@ -1,9 +1,13 @@
+##' @rdname PathwayStatsPlot
+##' @exportMethod PathwayStatsPlot
+##' @author Zhiming Ye
+
 setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,showStart=NULL,showEnd=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
 
 
 #' @rdname PathwayStatsPlot
 #' @title plot dotplot showing the statstical result of BioThemeFinder
-#' @param x BioThemeFinder.ORA.
+#' @param x BioThemeFinder object
 #' @param clusterType can be one of "MatrixResult", "NetworkResult"
 #' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
@@ -45,22 +49,20 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=Terms, size=Counts, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=fact_reorder(Terms,!!sym(orderBy)), size=Counts, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })
 
 
 #' @rdname PathwayStatsPlot
-#' @title plot dotplot showing the statstical result of BioThemeFinder
-#' @param x BioThemeFinder.ORA.FC
+#' @param x BioThemeFinder object
 #' @param clusterType can be one of "MatrixResult", "NetworkResult"
 #' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param orderBy can be "pValue","GeneRatio","Counts"
 #' @param col_low defining color
 #' @param col_high defining color
-#' @return a ggplot2 object, add + facet_grid(~Cluster) to display the clustered result. remove + facet_grid(~othergroup) for unclustered results
 #' @export
 #' @author Zhiming Ye
 #' @examples
@@ -95,7 +97,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=Terms, size=Counts, color=pValue,shape=Regulation))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=fact_reorder(Terms,!!sym(orderBy)), size=Counts, color=pValue,shape=Regulation))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })
@@ -103,14 +105,12 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 
 
 #' @rdname PathwayStatsPlot
-#' @title plot dotplot showing the statstical result of BioThemeFinder
-#' @param x BioThemeFinder.GSEA
+#' @param x BioThemeFinder object
 #' @param clusterType can be one of "MatrixResult", "NetworkResult"
 #' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the NES)
 #' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the NES)
 #' @param col_low defining color
 #' @param col_high defining color
-#' @return a ggplot2 object, add + facet_grid(~Cluster) to display the clustered result. remove + facet_grid(~othergroup) for unclustered results
 #' @export
 #' @author Zhiming Ye
 #' @examples
@@ -145,7 +145,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clust
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=NES, y=Terms, size=NES, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=NES, y=fact_reorder(Terms,NES), size=NES, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })

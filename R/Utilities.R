@@ -226,17 +226,9 @@ ExtractGenes<-function(x,Cluster){
 resultDF<-function(x,file){
   return(x@Results)
 }
-
-.onAttach<-function(){
-  # if(!require(ComplexHeatmap)){BiocManager::install("ComplexHeatmap")}
-  # if(!require(RColorBrewer)){install.packages("RColorBrewer")}
-  # if(!require(circlize)){install.packages("circlize")}
-  # if(!require(NMF)){install.packages("NMF")}
-  # if(!require(org.Hs.eg.db)){BiocManager::install("org.Hs.eg.db")}
-  # if(!require(org.Mm.eg.db)){BiocManager::install("org.Mm.eg.db")}
-  require(clusterProfiler)
-  require(ReactomePA)
+#
+.onAttach<-function(libname, pkgname){
   cat("\n\n")
   message("****BioThemeFinder**** V1.0\nAuthor:Zhiming Ye")
-  cat(paste0("Enrichment analysis will be finished by clusterProfiler ",packageVersion('clusterProfiler')," and ReactomePA ",packageVersion('ReactomePA')," .\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n"))
+  cat(paste0("Enrichment analysis will be finished by clusterProfiler and ReactomePA.\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n"))
 }

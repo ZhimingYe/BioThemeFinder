@@ -1,9 +1,13 @@
+##' @rdname PathwayHeatmap
+##' @exportMethod PathwayHeatmap
+##' @author Zhiming Ye
+
 setGeneric("PathwayHeatmap",function(x,using_cluster=T,...) standardGeneric("PathwayHeatmap"))
 
 
 #' @rdname PathwayHeatmap
 #' @title Draw heatmap of repetition rate matrix
-#' @param x BioThemeFinder.ORA.
+#' @param x BioThemeFinder object
 #' @param using_cluster Draw figure using cluster result or not
 #' @param clusterType can be MatrixResult or NetworkResult
 #' @return
@@ -11,7 +15,6 @@ setGeneric("PathwayHeatmap",function(x,using_cluster=T,...) standardGeneric("Pat
 #' @author Zhiming Ye
 #' @examples
 setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cluster=T,clusterType="NetworkResult",...){
-  clusterType<-
   require(ComplexHeatmap)
   require(RColorBrewer)
   require(circlize)
@@ -54,8 +57,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cl
 
 
 #' @rdname PathwayHeatmap
-#' @title Draw heatmap of repetition rate matrix
-#' @param x BioThemeFinder.ORA.FC
+#' @param x BioThemeFinder object
 #' @param using_cluster Draw figure using cluster result or not
 #' @param clusterType can be MatrixResult or NetworkResult
 #' @return
@@ -110,8 +112,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA_FC"),function(x,using
 })
 
 #' @rdname PathwayHeatmap
-#' @title Draw heatmap of repetition rate matrix
-#' @param x BioThemeFinder.GSEA
+#' @param x BioThemeFinder object
 #' @param using_cluster Draw figure using cluster result or not
 #' @param clusterType can be MatrixResult or NetworkResult
 #' @return

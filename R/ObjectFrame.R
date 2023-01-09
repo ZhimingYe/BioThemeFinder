@@ -51,6 +51,8 @@ setClass("BioThemeFinder.GSEA",slots=list(RankedGenes="numeric",
 #'
 #' @examples
 Create.newBioThemeFinder.ORA<-function (Gene,FromType = "SYMBOL", Species="human"){
+  require(clusterProfiler)
+  require(ReactomePA)
   Species <- match.arg(Species, c("human", "mouse","non-gene"))
   if(Species=="human"){
     require(org.Hs.eg.db)
@@ -92,6 +94,8 @@ Create.newBioThemeFinder.ORA<-function (Gene,FromType = "SYMBOL", Species="human
 #'
 #' @examples
 Create.newBioThemeFinder.ORAwithFC<-function (Gene, log2FC,Pvalue,FCcutoff=1,PvalueCutOff=0.05,FromType = "SYMBOL", Species="human",CntsOfDiffGene=2){
+  require(clusterProfiler)
+  require(ReactomePA)
   Species <- match.arg(Species, c("human", "mouse","non-gene"))
   if(Species=="human"){
     require(org.Hs.eg.db)
@@ -142,6 +146,8 @@ Create.newBioThemeFinder.ORAwithFC<-function (Gene, log2FC,Pvalue,FCcutoff=1,Pva
 #'
 #' @examples
 Create.newBioThemeFinder.GSEA<-function (Gene, log2FC,FromType = "SYMBOL", Species="human"){
+  require(clusterProfiler)
+  require(ReactomePA)
   Species <- match.arg(Species, c("human", "mouse","non-gene"))
   if(Species=="human"){
     require(org.Hs.eg.db)

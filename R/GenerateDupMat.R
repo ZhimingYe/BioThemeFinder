@@ -1,9 +1,14 @@
+##' @rdname GenerateDupMat
+##' @exportMethod GenerateDupMat
+##' @author Zhiming Ye
+
+
 setGeneric("GenerateDupMat",function(x,...) standardGeneric("GenerateDupMat"))
 
 
 #' @rdname GenerateDupMat
 #' @title generate repetition rate matrix
-#' @param x BioThemeFinder.ORA.
+#' @param x BioThemeFinder object
 #'
 #' @return BioThemeFinder object
 #' @export
@@ -26,10 +31,8 @@ setMethod("GenerateDupMat",signature(x="BioThemeFinder.ORA"),function(x,...){
 
 
 #' @rdname GenerateDupMat
-#' @title generate repetition rate matrix
-#' @param x BioThemeFinder.ORA_FC.
+#' @param x BioThemeFinder object
 #'
-#' @return BioThemeFinder object
 #' @export
 #' @author Zhiming Ye
 #' @examples
@@ -49,10 +52,8 @@ setMethod("GenerateDupMat",signature(x="BioThemeFinder.ORA_FC"),function(x,...){
 })
 
 #' @rdname GenerateDupMat
-#' @title generate repetition rate matrix
-#' @param x BioThemeFinder.GSEA.
+#' @param x BioThemeFinder object
 #'
-#' @return BioThemeFinder object
 #' @export
 #' @author Zhiming Ye
 #' @examples
