@@ -9,4 +9,6 @@ License: MPL-2.0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1
-Imports:dplyr,tibble,ggplot2,stringr,igraph,ggraph
+Imports: dplyr,tibble,ggplot2,stringr,igraph,ggraph
+Depends: 
+    R (>= 3.5.0)
