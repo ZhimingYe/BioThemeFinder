@@ -20,7 +20,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cl
   require(circlize)
   do_cluster<-F
   if(("GSCluster"%in%colnames(x@Results)&using_cluster)|("NetworkCluster"%in%colnames(x@Results)&using_cluster)){
-    message("Drawing using existed matrix cluster.\nif want to remove cluster, Please use removeCluster function.\n")
+    message("Drawing using existed cluster.\n")
     clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
     do_cluster<-T
     if(clusterType=="MatrixResult"){
@@ -52,7 +52,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA"),function(x,using_cl
   }
   else{
     warning(paste0("using ",clusterType," to display result.\n"))
-    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster,cluster_columns = F,cluster_rows = F)
   }
 })
 
@@ -71,7 +71,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA_FC"),function(x,using
   require(circlize)
   do_cluster<-F
   if(("GSCluster"%in%colnames(x@Results)&using_cluster)|("NetworkCluster"%in%colnames(x@Results)&using_cluster)){
-    message("Drawing using existed matrix cluster.\nif want to remove cluster, Please use removeCluster function.\n")
+    message("Drawing using existed matrix cluster.\n")
     clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
     do_cluster<-T
     if(clusterType=="MatrixResult"){
@@ -109,7 +109,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.ORA_FC"),function(x,using
   }
   else{
     warning(paste0("using ",clusterType," to display result.\n"))
-    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster,cluster_columns = F,cluster_rows = F)
   }
 })
 
@@ -127,7 +127,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.GSEA"),function(x,using_c
   require(circlize)
   do_cluster<-F
   if(("GSCluster"%in%colnames(x@Results)&using_cluster)|("NetworkCluster"%in%colnames(x@Results)&using_cluster)){
-    message("Drawing using existed matrix cluster.\nif want to remove cluster, Please use removeCluster function.\n")
+    message("Drawing using existed matrix cluster.\n")
     clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
     do_cluster<-T
     if(clusterType=="MatrixResult"){
@@ -163,7 +163,7 @@ setMethod("PathwayHeatmap",signature(x="BioThemeFinder.GSEA"),function(x,using_c
   }
   else{
     warning(paste0("using ",clusterType," to display result.\n"))
-    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster)
+    Heatmap(dupmat0,name = "Repetition Rate",col = colorRampPalette(rev(brewer.pal(n = 11, name = "RdBu")))(100),row_names_gp = gpar(fontsize = 9),column_names_gp = gpar(fontsize = 9),row_names_max_width = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 9)),column_names_max_height = max_text_width(rownames(dupmat0),gp = gpar(fontsize = 3)),right_annotation = rowANN,top_annotation = colANN,column_split = x@Results$geneSetCluster,row_split = x@Results$geneSetCluster,cluster_columns = F,cluster_rows = F)
   }
 
 })

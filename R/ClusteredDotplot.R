@@ -19,6 +19,7 @@ setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,showStart=NULL,showEnd
 #' @author Zhiming Ye
 #' @examples
 setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
+  require(forcats)
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
       showEnd<-30
@@ -49,7 +50,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=fact_reorder(Terms,!!sym(orderBy)), size=Counts, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=fct_reorder(Terms,!!sym(orderBy)), size=Counts, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })
@@ -67,6 +68,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
 #' @author Zhiming Ye
 #' @examples
 setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
+  require(forcats)
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
       showEnd<-30
@@ -97,7 +99,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=fact_reorder(Terms,!!sym(orderBy)), size=Counts, color=pValue,shape=Regulation))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=parse_ratio_(GeneRatio), y=fct_reorder(Terms,!!sym(orderBy)), size=Counts, color=pValue,shape=Regulation))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })
@@ -115,6 +117,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 #' @author Zhiming Ye
 #' @examples
 setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,col_low="#1e6091",col_high="#99d98c",...){
+  require(forcats)
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
       showEnd<-30
@@ -145,7 +148,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clust
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=NES, y=fact_reorder(Terms,NES), size=NES, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=NES, y=fct_reorder(Terms,NES), size=NES, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })
