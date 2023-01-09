@@ -4,7 +4,7 @@ Title: Find Biological Theme based on ORA or GSEA result
 Version: 1.4
 Author: Zhiming Ye
 Maintainer: Zhiming Ye <zhiming.ye@qq.com>
-Description: Presents an enrichment analysis method for multidatabase union.    Also, enrichment results can be turned into more explanatory biological stories using methods such as NMF or network-based community clustering.    
+Description: Find Biological Theme based on ORA or GSEA result
 License: MPL-2.0
 Encoding: UTF-8
 LazyData: true
