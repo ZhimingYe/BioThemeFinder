@@ -170,8 +170,8 @@ RemoveTerms<-function(x,Item){
 #' @author Zhiming Ye.
 #'
 #' @examples
-ExtractGenes<-function(x,Cluster){
-  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
+ExtractGenes<-function(x,clusterType){
+  Cluster <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
   if(Cluster=="MatrixResult"){
     ClsID<-"GSCluster"
     cat("Cluster list:\n")
@@ -223,7 +223,7 @@ ExtractGenes<-function(x,Cluster){
 #' @author Zhiming Ye
 #'
 #' @examples
-resultDF<-function(x,file){
+resultDF<-function(x){
   return(x@Results)
 }
 #

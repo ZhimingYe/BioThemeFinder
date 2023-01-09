@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
 可以使用`?`在每个函数前面看具体的帮助文档。
 
     data("LUAD_DEG")
-    BTFdemo<-Create.newBioThemeFinder.ORAwithFC(Gene = rownames(LUAD_DEG),log2FC = LUAD_DEG$log2FoldChange,Pvalue =LUAD_DEG$padj,FCcutoff = 3,PvalueCutOff = 0.01,Species = "human", FromType="ENSEMBL")
+    BTFdemo<-Create.newBioThemeFinder.ORAwithFC(Gene = rownames(LUAD_DEG),log2FC = LUAD_DEG$log2FoldChange,Pvalue =LUAD_DEG$padj,FCcutoff = 1,PvalueCutOff = 0.05,Species = "human", FromType="ENSEMBL")
 
 ### 进行多数据库富集分析
 
@@ -50,6 +50,8 @@ knitr::opts_chunk$set(
 当纳入自定义数据库（SelfDefinedGS）的时候，需要用`Term2GENE`传入自定义基因集。
 
 具体帮助使用`?MultiDBanalysis`查看。
+
+另外还可以使用`parse.clusterProfiler.result`直接从clusterProfiler导入结果对象。
 
     BTFdemo<-MultiDBanalysis(BTFdemo,PVal = 0.05,QVal = 0.05,DBlist = c("GO","KEGG","Reactome"),nGeneCutOff = 5,simplify_cutoff = 0.7,useMKEGG = T)
     
@@ -89,10 +91,20 @@ knitr::opts_chunk$set(
     
 ### 基于热图的可视化
 
+`clusterType`可以为"MatrixResult", "NetworkResult"之一。后文同
+
     PathwayHeatmap(BTFdemo,using_cluster=T,clusterType="NetworkResult")
 
 ### 分面的点图
+    
+具体帮助可以使用`?PathwayStatsPlot`查看。加入`+ facet_grid(~Cluster)`进行分面。
+
+可以看到，每个模块的功能十分清晰，同时很好的利用了多数据库。
+
+    PathwayStatsPlot(BTFdemo,orderBy = "pValue",clusterType="NetworkResult")+ facet_grid(~Cluster)
+    PathwayStatsPlot(BTFdemo,orderBy = "pValue",clusterType="NetworkResult")+ facet_grid(~Cluster)
 
 ### 提取结果
 
-
+    Genes<-ExtractGenes(BTFdemo,clusterType="NetworkResult")
+    Result<-resultDF(BTFdemo)
