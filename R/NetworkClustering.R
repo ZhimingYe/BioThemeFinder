@@ -57,11 +57,11 @@ PlotNetwork<-function(x,method="igraph",Label=T,...){
     message("For better viewing, please zoom the network, or output it as a PDF and zoom in to find clusters")
     if(method=="igraph"&Label==T){
       message("if can NOT display TEXT, please stop and try [ggplot2] method.\n")
-      plot(x@Communities,x@Network,edge.color="#457b9d",edge.width=5,e=TRUE,vertex.size=6,vertex.label.color="#1d3557",vertex.label.cex=0.8,vertex.label.font=2,col=V(x@Network)$color,...)
+      plot(x@Communities,x@Network,edge.color="#457b9d",edge.width=5,e=TRUE,vertex.size=6,vertex.label.color="#eb5e28",vertex.label.cex=0.8,vertex.label.font=2,col=V(x@Network)$color,...)
     }
     if(method=="igraph"&Label==F){
       message("if can not display texts, please stop and try [ggplot2] method.\n")
-      plot(x@Communities,x@Network,edge.color="#457b9d",edge.width=5,e=TRUE,vertex.size=6,vertex.label=NA,vertex.label.color="#1d3557",vertex.label.cex=0.8,vertex.label.font=2,col=V(x@Network)$color,...)
+      plot(x@Communities,x@Network,edge.color="#457b9d",edge.width=5,e=TRUE,vertex.size=6,vertex.label=NA,vertex.label.color="#eb5e28",vertex.label.cex=0.8,vertex.label.font=2,col=V(x@Network)$color,...)
     }
     if(method=="ggplot2"&Label==T){
       xr<-x
