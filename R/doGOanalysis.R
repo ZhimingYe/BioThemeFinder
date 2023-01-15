@@ -55,7 +55,7 @@ setMethod("doGOanalysis",signature(x="BioThemeFinder.GSEA"),function(x,PValCutOf
   GOCC<-clusterProfiler::gseGO(x@RankedGenes,OrgDb = OrgDB,keyType = "ENTREZID",ont = "CC",pvalueCutoff = PValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="GOCC")
   GOMF<-clusterProfiler::gseGO(x@RankedGenes,OrgDb = OrgDB,keyType = "ENTREZID",ont = "MF",pvalueCutoff = PValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="GOMF")
   ResultsDF<-rbind(GOBP,GOCC,GOMF)
-  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
+  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=case_when(NES>1~"Favor_UpReg",NES<(-1)~"Favor_DnReg",T~"UnKnown"))
   RESdf<-ResultsDF
   return(RESdf)
 })

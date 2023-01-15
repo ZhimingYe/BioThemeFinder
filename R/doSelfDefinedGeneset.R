@@ -80,7 +80,7 @@ setMethod("doSelfDefinedGeneset",signature(x="BioThemeFinder.GSEA"),function(x,P
     SDres<-clusterProfiler::GSEA(x@RankedGenes,TERM2GENE=Term2GENE,pvalueCutoff = PValCutOff)%>%as.data.frame()%>%dplyr::mutate(Database="Self")
   }
   ResultsDF<-SDres
-  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
+  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=case_when(NES>1~"Favor_UpReg",NES<(-1)~"Favor_DnReg",T~"UnKnown"))
   RESdf<-ResultsDF
   return(RESdf)
 })

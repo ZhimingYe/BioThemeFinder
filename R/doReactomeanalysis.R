@@ -55,7 +55,7 @@ setMethod("doReactomeanalysis",signature(x="BioThemeFinder.GSEA"),function(x,PVa
   }
   RAres<-ReactomePA::gsePathway(x@RankedGenes,organism=orgid,pvalueCutoff = PValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="Reactome")
   ResultsDF<-RAres
-  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
+  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=case_when(NES>1~"Favor_UpReg",NES<(-1)~"Favor_DnReg",T~"UnKnown"))
   RESdf<-ResultsDF
   return(RESdf)
 })

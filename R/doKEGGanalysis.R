@@ -67,7 +67,7 @@ setMethod("doKEGGanalysis",signature(x="BioThemeFinder.GSEA"),function(x,PValCut
     KEGGres2<-clusterProfiler::gseMKEGG(x@RankedGenes,organism=orgid,pvalueCutoff = PValCutOff)%>%DOSE::setReadable(OrgDb = OrgDB,keyType = "ENTREZID")%>%as.data.frame()%>%dplyr::mutate(Database="KEGG")
   }
   ResultsDF<-rbind(KEGGres,KEGGres2)
-  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=ifelse(.$NES>0,"Favor_UpReg","Favor_DnReg"))
+  ResultsDF<-ResultsDF%>%dplyr::mutate(RegType=case_when(NES>1~"Favor_UpReg",NES<(-1)~"Favor_DnReg",T~"UnKnown"))
   RESdf<-ResultsDF
   return(RESdf)
 })

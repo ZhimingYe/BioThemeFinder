@@ -109,8 +109,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 #' @rdname PathwayStatsPlot
 #' @param x BioThemeFinder object
 #' @param clusterType can be one of "MatrixResult", "NetworkResult"
-#' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the NES)
-#' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the NES)
+#' @param
 #' @param col_low defining color
 #' @param col_high defining color
 #' @export
