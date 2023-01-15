@@ -2,7 +2,7 @@
 ##' @exportMethod PathwayStatsPlot
 ##' @author Zhiming Ye
 
-setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,showStart=NULL,showEnd=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
+setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,showStart=NULL,showEnd=NULL,showTerms=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
 
 
 #' @rdname PathwayStatsPlot
@@ -116,7 +116,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 #' @export
 #' @author Zhiming Ye
 #' @examples
-setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,col_low="#1e6091",col_high="#99d98c",...){
+setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="NetworkResult",showTerms,col_low="#1e6091",col_high="#99d98c",...){
   require(forcats)
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
@@ -140,11 +140,11 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clust
   if(nrow(FigDF)<2){
     stop("Enrichment result is too few!\n")
   }
-  FigDF<-FigDF%>%dplyr::arrange(desc(abs(!!sym(orderBy))))
-  if(showEnd<showStart){
-    stop("End is smaller than start!\n")
+  FigDF<-FigDF%>%dplyr::arrange(desc(!!sym(orderBy)))
+  if(!(length(showTerms)>1)){
+    stop("In GSEA, please pass a vector to showTerms to determine which items will show. \n")
   }
-  keep<-c(1:nrow(FigDF))[c(1:nrow(FigDF))%in%c(showStart:showEnd)]
+  keep<-c(1:nrow(FigDF))[c(1:nrow(FigDF))%in%showTerms]
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
