@@ -6,6 +6,7 @@
 *.rds
 *.R2s
 *.zip
+*.pdf
 # History files
 .Rhistory
 .Rapp.history

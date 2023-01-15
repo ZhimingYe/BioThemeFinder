@@ -156,7 +156,7 @@ RemoveTerms<-function(x,Item){
   if(length(Item)>1){
     x@Results<-x@Results%>%dplyr::filter(!Description%in%Item)#add ! ,fix bug
   }
-  x@DupMatrix<-NULL
+  x@DupMatrix<-data.frame()
   x@IsClustered<-F
   return(x)
 }
@@ -229,6 +229,6 @@ resultDF<-function(x){
 #
 .onAttach<-function(libname, pkgname){
   cat("\n\n")
-  message("****BioThemeFinder**** V1.0\nAuthor:Zhiming Ye")
+  message("****BioThemeFinder**** V1.5\nAuthor:Zhiming Ye")
   cat(paste0("Enrichment analysis will be finished by clusterProfiler and ReactomePA.\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n"))
 }
