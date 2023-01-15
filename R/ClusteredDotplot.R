@@ -140,7 +140,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clust
   if(nrow(FigDF)<2){
     stop("Enrichment result is too few!\n")
   }
-  FigDF<-FigDF%>%dplyr::arrange(desc(!!sym(orderBy)))
+  FigDF<-FigDF%>%dplyr::arrange(desc(abs(!!sym(orderBy))))
   if(showEnd<showStart){
     stop("End is smaller than start!\n")
   }
@@ -148,7 +148,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clust
   if(length(keep)==0){
     stop("NO overlap!\n")
   }
-  p<-ggplot(FigDF[keep,],aes(x=NES, y=fct_reorder(Terms,NES), size=NES, color=pValue))+geom_point()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+scale_size(range=c(2, 8))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
+  p<-ggplot(FigDF[keep,],aes(x=NES, y=fct_reorder(Terms,NES),color=pValue))+geom_col()+scale_color_continuous(low=col_low, high=col_high, name = "adjustedP",guide=guide_colorbar(reverse=F))+xlab("Gene Ratio")+ylab("Gene Set")+theme_bw()
   print(p)
   return(p)
 })
