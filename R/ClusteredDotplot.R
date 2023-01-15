@@ -118,14 +118,6 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 #' @examples
 setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="NetworkResult",showTerms,col_low="#1e6091",col_high="#99d98c",...){
   require(forcats)
-  if(showEnd>nrow(x@Results)){
-    if(nrow(x@Results)>30){
-      showEnd<-30
-    }
-    else{
-      showEnd<-nrow(x@Results)
-    }
-  }
   clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
   orderBy<-"NES"
   if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0){
