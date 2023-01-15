@@ -34,10 +34,12 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
     FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=NA)
   }
   if("GSCluster"%in%colnames(x@Results)&clusterType=="MatrixResult"){
-    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$GSCluster)%>%na.omit()
+    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$GSCluster)
+    FigDF$Cluster[is.na(FigDF$Cluster)]<-"UnKnown"
   }
   if("NetworkCluster"%in%colnames(x@Results)&clusterType=="NetworkResult"){
-    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$NetworkCluster)%>%na.omit()
+    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$NetworkCluster)
+    FigDF$Cluster[is.na(FigDF$Cluster)]<-"UnKnown"
   }
   if(nrow(FigDF)<2){
     stop("Enrichment result is too few!\n")
@@ -83,10 +85,12 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
     FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=NA,Regulation=x@Results$RegType)
   }
   if("GSCluster"%in%colnames(x@Results)&clusterType=="MatrixResult"){
-    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$GSCluster,Regulation=x@Results$RegType)%>%na.omit()
+    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$GSCluster,Regulation=x@Results$RegType)
+    FigDF$Cluster[is.na(FigDF$Cluster)]<-"UnKnown"
   }
   if("NetworkCluster"%in%colnames(x@Results)&clusterType=="NetworkResult"){
-    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$NetworkCluster,Regulation=x@Results$RegType)%>%na.omit()
+    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=x@Results$NetworkCluster,Regulation=x@Results$RegType)
+    FigDF$Cluster[is.na(FigDF$Cluster)]<-"UnKnown"
   }
   if(nrow(FigDF)<2){
     stop("Enrichment result is too few!\n")
@@ -123,10 +127,12 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clust
     FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,NES=x@Results$NES,Cluster=NA)
   }
   if("GSCluster"%in%colnames(x@Results)&clusterType=="MatrixResult"){
-    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,NES=x@Results$NES,Cluster=x@Results$GSCluster)%>%na.omit()
+    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,NES=x@Results$NES,Cluster=x@Results$GSCluster)
+    FigDF$Cluster[is.na(FigDF$Cluster)]<-"UnKnown"
   }
   if("NetworkCluster"%in%colnames(x@Results)&clusterType=="NetworkResult"){
-    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,NES=x@Results$NES,Cluster=x@Results$NetworkCluster)%>%na.omit()
+    FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,NES=x@Results$NES,Cluster=x@Results$NetworkCluster)
+    FigDF$Cluster[is.na(FigDF$Cluster)]<-"UnKnown"
   }
   if(nrow(FigDF)<2){
     stop("Enrichment result is too few!\n")
