@@ -2,7 +2,7 @@
 ##' @exportMethod PathwayStatsPlot
 ##' @author Zhiming Ye
 
-setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,showStart=NULL,showEnd=NULL,showTerms=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
+setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
 
 
 #' @rdname PathwayStatsPlot
