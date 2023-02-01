@@ -1,7 +1,7 @@
 Package: BioThemeFinder
 Type: Package
 Title: Find Biological Theme based on ORA or GSEA result
-Version: 1.6.1
+Version: 1.8
 Author: Zhiming Ye
 Maintainer: Zhiming Ye <zhiming.ye@qq.com>
 Description: Find Biological Theme based on ORA or GSEA result

@@ -2,13 +2,13 @@
 ##' @exportMethod PathwayStatsPlot
 ##' @author Zhiming Ye
 
-setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,orderBy,...) standardGeneric("PathwayStatsPlot"))
+setGeneric("PathwayStatsPlot",function(x,clusterType="Empty",...) standardGeneric("PathwayStatsPlot"))
 
 
 #' @rdname PathwayStatsPlot
 #' @title plot dotplot showing the statstical result of BioThemeFinder
 #' @param x BioThemeFinder object
-#' @param clusterType can be one of "MatrixResult", "NetworkResult"
+#' @param clusterType can be one of "MatrixResult", "NetworkResult" or "Empty"
 #' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param orderBy can be "pValue","GeneRatio","Counts"
@@ -18,7 +18,7 @@ setGeneric("PathwayStatsPlot",function(x,clusterType=NULL,orderBy,...) standardG
 #' @export
 #' @author Zhiming Ye
 #' @examples
-setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
+setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,clusterType="Empty",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
   require(forcats)
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
@@ -28,9 +28,9 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
       showEnd<-nrow(x@Results)
     }
   }
-  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
+  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult","Empty"))
   orderBy<-match.arg(orderBy,c("pValue","GeneRatio","Counts"))
-  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0){
+  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0|clusterType=="Empty"){
     FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=NA)
   }
   if("GSCluster"%in%colnames(x@Results)&clusterType=="MatrixResult"){
@@ -60,7 +60,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
 
 #' @rdname PathwayStatsPlot
 #' @param x BioThemeFinder object
-#' @param clusterType can be one of "MatrixResult", "NetworkResult"
+#' @param clusterType can be one of "MatrixResult", "NetworkResult" or "Empty"
 #' @param showStart showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param showEnd showing from <showStart> to <showEnd> in ordered table (ordering is based on the orderBy parameter)
 #' @param orderBy can be "pValue","GeneRatio","Counts"
@@ -69,7 +69,7 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA"),function(x,cluste
 #' @export
 #' @author Zhiming Ye
 #' @examples
-setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clusterType="NetworkResult",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
+setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clusterType="Empty",showStart=1,showEnd=20,orderBy,col_low="#1e6091",col_high="#99d98c",...){
   require(forcats)
   if(showEnd>nrow(x@Results)){
     if(nrow(x@Results)>30){
@@ -79,9 +79,9 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
       showEnd<-nrow(x@Results)
     }
   }
-  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
+  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult","Empty"))
   orderBy<-match.arg(orderBy,c("pValue","GeneRatio","Counts"))
-  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0){
+  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0|clusterType=="Empty"){
     FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,Counts=x@Results$Count,GeneRatio=x@Results$GeneRatio,Cluster=NA,Regulation=x@Results$RegType)
   }
   if("GSCluster"%in%colnames(x@Results)&clusterType=="MatrixResult"){
@@ -112,18 +112,18 @@ setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.ORA_FC"),function(x,clu
 
 #' @rdname PathwayStatsPlot
 #' @param x BioThemeFinder object
-#' @param clusterType can be one of "MatrixResult", "NetworkResult"
+#' @param clusterType can be one of "MatrixResult", "NetworkResult"  or "Empty"
 #' @param
 #' @param col_low defining color
 #' @param col_high defining color
 #' @export
 #' @author Zhiming Ye
 #' @examples
-setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="NetworkResult",showTerms,col_low="#1e6091",col_high="#99d98c",...){
+setMethod("PathwayStatsPlot",signature(x="BioThemeFinder.GSEA"),function(x,clusterType="Empty",showTerms,col_low="#1e6091",col_high="#99d98c",...){
   require(forcats)
-  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
+  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult","Empty"))
   orderBy<-"NES"
-  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0){
+  if(sum(c("GSCluster","NetworkCluster")%in%colnames(x@Results))==0|clusterType=="Empty"){
     FigDF<-data.frame(Terms=paste0(x@Results$Database,":",x@Results$Description),pValue=x@Results$p.adjust,NES=x@Results$NES,Cluster=NA)
   }
   if("GSCluster"%in%colnames(x@Results)&clusterType=="MatrixResult"){

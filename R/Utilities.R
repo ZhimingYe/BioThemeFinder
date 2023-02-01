@@ -164,20 +164,21 @@ RemoveTerms<-function(x,Item){
 #' @title Extracting genes involved in a specified clustering module
 #'
 #' @param x a BioThemeFinder object
-#' @param Cluster can be MatrixResult or NetworkResult
+#' @param clusterType can be MatrixResult or NetworkResult
+#' @param Cluster Specify which cluster will be extract
 #' @return A data frame
 #' @export
 #' @author Zhiming Ye.
 #'
 #' @examples
-ExtractGenes<-function(x,clusterType){
-  Cluster <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
-  if(Cluster=="MatrixResult"){
+ExtractGenes<-function(x,clusterType,Cluster){
+  clusterType <- match.arg(clusterType, c("MatrixResult", "NetworkResult"))
+  if(clusterType=="MatrixResult"){
     ClsID<-"GSCluster"
     cat("Cluster list:\n")
     print(table(x@Results$GSCluster))
   }
-  if(Cluster=="NetworkResult"){
+  if(clusterType=="NetworkResult"){
     ClsID<-"NetworkCluster"
     cat("Cluster list:\n")
     print(table(x@Results$NetworkCluster))
@@ -229,6 +230,6 @@ resultDF<-function(x){
 #
 .onAttach<-function(libname, pkgname){
   cat("\n\n")
-  message("****BioThemeFinder**** V1.7\nAuthor:Zhiming Ye")
-  cat(paste0("Enrichment analysis will be finished by clusterProfiler and ReactomePA.\nPlease cite article The Innovation. 2021, 2(3):100141. doi: 10.1016/j.xinn.2021.100141 when using them. \n"))
+  message("****BioThemeFinder**** V1.8\nAuthor:Zhiming Ye")
+  cat(paste0("Enrichment analysis will be finished by clusterProfiler and ReactomePA.\nPlease cite article The Innovation. 2021, 2(3):100141 when using them. \n\n\n"))
 }
