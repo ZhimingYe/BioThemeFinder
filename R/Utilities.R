@@ -49,7 +49,7 @@ MultiDBanalysis<-function(x,PVal = 0.05,QVal = 0.1,DBlist= c("GO","KEGG"),nGeneC
   }
   if("KEGG"%in%DBlist){
     cat("Applying KEGG analysis...\nKEGG database is only available online for non-commercial use. \nSo there might be an error when unable to reach to the KEGG server. \n")
-    Res0<-rbind(Res0,doKEGGanalysis(x=x,PValCutOff = PVal,QValCutOff=QVal,MKEGG=useMKEGG))
+    Res0<-rbind(Res0,doKEGGanalysis(x=x,PValCutOff = PVal,QValCutOff=QVal,MKEGG=useMKEGG)%>%dplyr::mutate(Description=sapply(strsplit(Description, " [-] "), function(x) x[1])))
   }
   if("Reactome"%in%DBlist){
     cat("Applying Reactome analysis...\n")

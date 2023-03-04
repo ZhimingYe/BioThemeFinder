@@ -1,7 +1,7 @@
 Package: BioThemeFinder
 Type: Package
 Title: Find Biological Theme based on ORA or GSEA result
-Version: 1.8
+Version: 1.8.1
 Author: Zhiming Ye
 Maintainer: Zhiming Ye <zhiming.ye@qq.com>
 Description: Find Biological Theme based on ORA or GSEA result
@@ -12,6 +12,7 @@ RoxygenNote: 7.2.1
 Imports: dplyr,tibble,ggplot2,stringr,igraph,ggraph
 Depends: 
     R (>= 3.5.0)
+    clusterProfiler (>= 4.7.1)
 Suggests: 
     knitr,
     rmarkdown
