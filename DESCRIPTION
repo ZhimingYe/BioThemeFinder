@@ -12,7 +12,6 @@ RoxygenNote: 7.2.1
 Imports: dplyr,tibble,ggplot2,stringr,igraph,ggraph
 Depends: 
     R (>= 3.5.0)
-    clusterProfiler (>= 4.7.1)
 Suggests: 
     knitr,
     rmarkdown
