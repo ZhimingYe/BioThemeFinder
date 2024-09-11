@@ -13,93 +13,133 @@ This package is an expansion pack of the famous package "clusterProfiler". BioTh
     
 ## Demo
 
-### 载入R包
+### Loading R Packages
 
-    library(BioThemeFinder)
-    library(clusterProfiler)
-    library(ReactomePA)
-    library(org.Hs.eg.db)
-    library(org.Mm.eg.db)
+```r
+library(BioThemeFinder)
+library(clusterProfiler)
+library(ReactomePA)
+library(org.Hs.eg.db)
+library(org.Mm.eg.db)
+```
 
-这里的Gene名字和差异表达数值均为vector。差异表达数值可以来自DEG分析的log2FC，也可以来自ROC的power等（例如Seurat）。 LUAD_DEG为TCGA肺腺癌差异基因数据。为本包自带示例数据。
+Here, the Gene names and differential expression values are vectors. The differential expression values can come from the log2FC of DEG analysis or other metrics like ROC power (e.g., from Seurat). `LUAD_DEG` is differential gene expression data for TCGA lung adenocarcinoma and is provided as sample data with the package.
 
-### 创建BioThemeFinder对象
+### Creating a BioThemeFinder Object
 
-1.  `Create.newBioThemeFinder.ORA` 只有Gene名，使用过表达分析（ORA）进行分析
-2.  `Create.newBioThemeFinder.ORAwithFC` 具有Gene名、衡量基因表达差异的数值情况，使用过表达分析（ORA）进行分析
-3.  `Create.newBioThemeFinder.GSEA` 具有Gene名、衡量基因表达差异的数值情况，使用GSEA进行分析
+1. `Create.newBioThemeFinder.ORA` – Only Gene names, using over-representation analysis (ORA).
+2. `Create.newBioThemeFinder.ORAwithFC` – Contains Gene names and differential expression values, using over-representation analysis (ORA).
+3. `Create.newBioThemeFinder.GSEA` – Contains Gene names and differential expression values, using GSEA analysis.
 
-这里我们用以第二个情况作为demo。
+We will use the second scenario as the demo.
 
-`Species`为物种，支持人和小鼠（mouse），`FromType`为纳入的基因ID类型，可以是`ENSEMBL`, `ENTREZID`, `SYMBOL`等。
+`Species` specifies the organism, supporting human and mouse, and `FromType` indicates the type of gene ID provided, such as `ENSEMBL`, `ENTREZID`, or `SYMBOL`.
 
-可以使用`?`在每个函数前面看具体的帮助文档。
+You can use `?` before each function to view detailed documentation.
 
-    data("LUAD_DEG")
-    BTFdemo<-Create.newBioThemeFinder.ORAwithFC(Gene = rownames(LUAD_DEG),log2FC = LUAD_DEG$log2FoldChange,Pvalue =LUAD_DEG$padj,FCcutoff = 1,PvalueCutOff = 0.05,Species = "human", FromType="ENSEMBL")
+```r
+data("LUAD_DEG")
+BTFdemo <- Create.newBioThemeFinder.ORAwithFC(
+  Gene = rownames(LUAD_DEG),
+  log2FC = LUAD_DEG$log2FoldChange,
+  Pvalue = LUAD_DEG$padj,
+  FCcutoff = 1,
+  PvalueCutOff = 0.05,
+  Species = "human",
+  FromType = "ENSEMBL"
+)
+```
 
-### 进行多数据库富集分析
+### Performing Multi-Database Enrichment Analysis
 
-`DBlist`可以是GO, KEGG, Reactome, SelfDefinedGS。
+`DBlist` can include GO, KEGG, Reactome, or SelfDefinedGS.
 
-当纳入自定义数据库（SelfDefinedGS）的时候，需要用`Term2GENE`传入自定义基因集。
+When using a custom database (`SelfDefinedGS`), you need to pass a custom gene set using `Term2GENE`.
 
-具体帮助使用`?MultiDBanalysis`查看。
+Check detailed documentation using `?MultiDBanalysis`.
 
-另外还可以使用`parse.clusterProfiler.result`直接从clusterProfiler导入结果对象。
+Additionally, you can use `parse.clusterProfiler.result` to directly import results from clusterProfiler.
 
-    BTFdemo<-MultiDBanalysis(BTFdemo,PVal = 0.05,QVal = 0.05,DBlist = c("GO","KEGG","Reactome"),nGeneCutOff = 5,simplify_cutoff = 0.7,useMKEGG = T)
-    
-预览富集结果
+```r
+BTFdemo <- MultiDBanalysis(
+  BTFdemo,
+  PVal = 0.05,
+  QVal = 0.05,
+  DBlist = c("GO", "KEGG", "Reactome"),
+  nGeneCutOff = 5,
+  simplify_cutoff = 0.7,
+  useMKEGG = TRUE
+)
+```
 
-    PathwayStatsPlot(BTFdemo,orderBy = "pValue")
+Preview enrichment results:
 
-### 计算Term之间纳入的基因重复度
+```r
+PathwayStatsPlot(BTFdemo, orderBy = "pValue")
+```
 
-可以传入`EdgeCutoff`参数，决定重复度大于多少的两个富集分析到的通路才被纳入绘制网络。默认为0.5。
+### Calculating Gene Redundancy Between Terms
 
-    BTFdemo<-GenerateDupMat(BTFdemo)
+You can pass the `EdgeCutoff` parameter to decide the threshold for redundancy between pathways in enrichment analysis to be included in the network plot. The default is 0.5.
 
-可以使用`PathwayHeatmap(BTFdemo)`预览之。注意该图片对于R预览可能过大。请导出成50x50英寸左右的PDF，在PDF浏览器中查看。
+```r
+BTFdemo <- GenerateDupMat(BTFdemo)
+```
 
-    PathwayHeatmap(BTFdemo)
+You can preview the result using `PathwayHeatmap(BTFdemo)`. Note that the image might be too large for R's preview. It is recommended to export it as a PDF of approximately 50x50 inches and view it in a PDF viewer.
 
-图片解读：
+```r
+PathwayHeatmap(BTFdemo)
+```
 
-### 基于网络聚类
+Image interpretation:
 
-    BTFdemo<-NetworkClustering(BTFdemo)
+### Network-Based Clustering
 
-### 网络聚类可视化
+```r
+BTFdemo <- NetworkClustering(BTFdemo)
+```
 
-    PlotNetwork(BTFdemo,method = "igraph",Label = T)
-    PlotNetwork(BTFdemo,method = "igraph",Label = F)
-    PlotNetwork(BTFdemo,method = "ggplot2",Label = T)
+### Network Clustering Visualization
 
-### 基于矩阵的聚类
+```r
+PlotNetwork(BTFdemo, method = "igraph", Label = TRUE)
+PlotNetwork(BTFdemo, method = "igraph", Label = FALSE)
+PlotNetwork(BTFdemo, method = "ggplot2", Label = TRUE)
+```
 
-可以使用的聚类工具有"nmf","hc","pam","fuzzy"。可以通过`method`传入。nmf为非负矩阵分解方法，hc为层次聚类方法，pam为围绕中心点的划分（Partitioning Around Medoid）方法，fuzzy为模糊聚类（Fuzzy Clustering）。具体的帮助请`?MatrixClustering`。
+### Matrix-Based Clustering
 
-`k`可以通过概览`PathwayHeatmap`大致确定。
+The available clustering tools are "nmf", "hc", "pam", and "fuzzy". You can specify the tool via the `method` parameter. `nmf` refers to non-negative matrix factorization, `hc` to hierarchical clustering, `pam` to Partitioning Around Medoids, and `fuzzy` to fuzzy clustering. For detailed help, see `?MatrixClustering`.
 
-    BTFdemo<-MatrixClustering(BTFdemo,k=20,method="nmf")
-    
-### 基于热图的可视化
+The value of `k` can be determined roughly by inspecting the `PathwayHeatmap`.
 
-`clusterType`可以为"MatrixResult", "NetworkResult"之一。后文同
+```r
+BTFdemo <- MatrixClustering(BTFdemo, k = 20, method = "nmf")
+```
 
-    PathwayHeatmap(BTFdemo,using_cluster=T,clusterType="NetworkResult")
+### Visualization Based on Heatmap
 
-### 分面的点图
-    
-具体帮助可以使用`?PathwayStatsPlot`查看。加入`+ facet_grid(~Cluster)`进行分面。
+`clusterType` can be one of "MatrixResult" or "NetworkResult".
 
-可以看到，每个模块的功能十分清晰，同时很好的利用了多数据库。
+```r
+PathwayHeatmap(BTFdemo, using_cluster = TRUE, clusterType = "NetworkResult")
+```
 
-    PathwayStatsPlot(BTFdemo,orderBy = "pValue",clusterType="NetworkResult")+ facet_grid(~Cluster)
-    PathwayStatsPlot(BTFdemo,orderBy = "pValue",clusterType="NetworkResult")+ facet_grid(~Cluster)
+### Faceted Dot Plot
 
-### 提取结果
+For detailed help, see `?PathwayStatsPlot`. Add `+ facet_grid(~Cluster)` for faceting.
 
-    Genes<-ExtractGenes(BTFdemo,clusterType="NetworkResult")
-    Result<-resultDF(BTFdemo)
+You can observe that each module's function is quite clear and makes good use of multiple databases.
+
+```r
+PathwayStatsPlot(BTFdemo, orderBy = "pValue", clusterType = "NetworkResult") + facet_grid(~Cluster)
+PathwayStatsPlot(BTFdemo, orderBy = "pValue", clusterType = "NetworkResult") + facet_grid(~Cluster)
+```
+
+### Extracting Results
+
+```r
+Genes <- ExtractGenes(BTFdemo, clusterType = "NetworkResult")
+Result <- resultDF(BTFdemo)
+```
